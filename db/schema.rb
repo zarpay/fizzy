@@ -111,14 +111,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_22_180133) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.integer "bubble_id", null: false
     t.integer "creator_id", null: false
     t.json "particulars", default: {}
     t.string "action", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "rollup_id"
-    t.index ["bubble_id", "action"], name: "index_events_on_bubble_id_and_action"
     t.index ["creator_id"], name: "index_events_on_creator_id"
     t.index ["rollup_id"], name: "index_events_on_rollup_id"
   end
@@ -133,10 +131,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_22_180133) do
   end
 
   create_table "rollups", force: :cascade do |t|
-    t.integer "bubble_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["bubble_id"], name: "index_rollups_on_bubble_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -209,7 +205,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_22_180133) do
   add_foreign_key "events", "rollups"
   add_foreign_key "pops", "bubbles"
   add_foreign_key "pops", "users"
-  add_foreign_key "rollups", "bubbles"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "bubbles"
   add_foreign_key "taggings", "tags"

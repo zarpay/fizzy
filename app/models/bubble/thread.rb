@@ -11,7 +11,7 @@ class Bubble::Thread
     if entries.last&.rollup?
       entries.last.rollup
     else
-      Rollup.new bubble: bubble
+      Rollup.new
     end
   end
 

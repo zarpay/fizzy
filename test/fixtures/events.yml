@@ -1,95 +1,83 @@
 logo_created:
   creator: david
-  bubble: logo
   action: created
+  rollup: logo_initial_activity
   particulars: <%= { creator_name: "David" }.to_json %>
   created_at: <%= 1.week.ago %>
-  rollup: logo_initial_activity
 
 logo_assignment_jz:
   creator: david
-  bubble: logo
   action: assigned
+  rollup: logo_initial_activity
   particulars: <%= { assignee_names: [ "JZ" ], creator_name: "David" }.to_json %>
   created_at: <%= 1.week.ago + 1.hour %>
-  rollup: logo_initial_activity
 
 logo_boost_dhh:
   creator: david
-  bubble: logo
   action: boosted
+  rollup: logo_initial_activity
   particulars: <%= { creator_name: "David" }.to_json %>
   created_at: <%= 1.week.ago + 2.hours %>
-  rollup: logo_initial_activity
 
 logo_assignment_km:
   creator: david
-  bubble: logo
   action: assigned
+  rollup: logo_second_activity
   particulars: <%= { assignee_names: [ "Kevin" ], creator_name: "David" }.to_json %>
   created_at: <%= 1.day.ago %>
-  rollup: logo_second_activity
 
 logo_boost_km1:
   creator: kevin
-  bubble: logo
   action: boosted
+  rollup: logo_second_activity
   particulars: <%= { creator_name: "Kevin" }.to_json %>
   created_at: <%= 1.day.ago + 1.hour %>
-  rollup: logo_second_activity
 
 logo_boost_km2:
   creator: kevin
-  bubble: logo
   action: boosted
+  rollup: logo_second_activity
   particulars: <%= { creator_name: "Kevin" }.to_json %>
   created_at: <%= 1.day.ago + 2.hours %>
-  rollup: logo_second_activity
 
 logo_boost_jz1:
   creator: jz
-  bubble: logo
   action: boosted
+  rollup: logo_second_activity
   particulars: <%= { creator_name: "JZ" }.to_json %>
   created_at: <%= 1.day.ago + 3.hours %>
-  rollup: logo_second_activity
 
 logo_boost_jz2:
   creator: jz
-  bubble: logo
   action: boosted
+  rollup: logo_third_activity
   particulars: <%= { creator_name: "JZ" }.to_json %>
   created_at: <%= 1.hour.ago %>
-  rollup: logo_third_activity
 
 layout_created:
   creator: david
-  bubble: layout
   action: created
+  rollup: layout_initial_activity
   particulars: <%= { creator_name: "David" }.to_json %>
   created_at: <%= 1.week.ago %>
-  rollup: layout_initial_activity
 
 layout_assignment_jz:
   creator: david
-  bubble: layout
   action: assigned
+  rollup: layout_initial_activity
   particulars: <%= { assignee_names: [ "JZ" ], creator_name: "David" }.to_json %>
   created_at: <%= 1.hour.ago %>
-  rollup: layout_initial_activity
 
 text_created:
   creator: kevin
-  bubble: text
   action: created
+  rollup: text_initial_activity
   particulars: <%= { creator_name: "Kevin" }.to_json %>
   created_at: <%= 1.week.ago %>
-  rollup: text_initial_activity
 
 shipping_created:
   creator: kevin
-  bubble: shipping
   action: created
+  rollup: shipping_initial_activity
   particulars: <%= { creator_name: "Kevin" }.to_json %>
   created_at: <%= 1.week.ago %>
-  rollup: shipping_initial_activity

@@ -1,20 +1,12 @@
 logo_initial_activity:
-  bubble: logo
   created_at: <%= 1.week.ago %>
 
 logo_second_activity:
-  bubble: logo
   created_at: <%= 1.day.ago %>
 
 logo_third_activity:
-  bubble: logo
   created_at: <%= 1.hour.ago %>
 
-layout_initial_activity:
-  bubble: layout
-
-text_initial_activity:
-  bubble: text
-
-shipping_initial_activity:
-  bubble: shipping
+layout_initial_activity: {}
+text_initial_activity: {}
+shipping_initial_activity: {}
