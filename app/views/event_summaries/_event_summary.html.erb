@@ -1,7 +1,7 @@
 <div class="event-summary flex-inline flex-wrap align-start fill-white border-radius center position-relative" data-controller="event-summary">
-  <%# Template Dependency: events/actions/* %>
-  <%= render event_summary.events.non_boosts, cache: true %>
-  <% event_summary.events.grouped_boosts.each do |creator, events| %>
-    <%= render partial: "events/actions/boosted", locals: { creator: creator, count: events.size } %>
+  <% event_summary.events.non_boosts.each do |event| %>
+    <%= event_description_for event %>
   <% end %>
+
+  <%= tallied_boosts_for event_summary %>
 </div>
