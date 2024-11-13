@@ -1,9 +1,9 @@
 module FiltersHelper
-  def filter_button_id(value, name)
+  def filter_chip_id(value, name)
     "#{name}_filter--#{value}"
   end
 
-  def filter_buttons(filter, terms, **)
+  def filter_chips(filter, terms, **)
     filters = filter.to_h.map do |kind, object|
       filter_button_from kind, object, **
     end
@@ -15,8 +15,8 @@ module FiltersHelper
     safe_join filters + terms
   end
 
-  def filter_button_tag(display:, value:, name:, **options)
-    tag.button id: filter_button_id(value, name),
+  def filter_chip_tag(display:, value:, name:, **options)
+    tag.button id: filter_chip_id(value, name),
         class: [ "btn txt-small btn--remove", options.delete(:class) ],
         data: { action: "filter-form#removeFilter form#submit", filter_form_target: "button" } do
       concat hidden_field_tag(name, value, id: nil)
@@ -27,7 +27,7 @@ module FiltersHelper
 
   def button_to_filter(text, kind:, object:, data: {})
     if object
-      button_to text, filter_buttons_path, method: :post, class: "btn btn--plain filter__button", params: filter_attrs(kind, object), data: data
+      button_to text, filter_chips_path, method: :post, class: "btn btn--plain filter__button", params: filter_attrs(kind, object), data: data
     else
       button_tag text, type: :button, class: "btn btn--plain filter__button", data: data
     end
@@ -36,9 +36,9 @@ module FiltersHelper
   private
     def filter_button_from(kind, object, **)
       if object.respond_to? :map
-        safe_join object.map { |o| filter_button_tag(**filter_attrs(kind, o), **) }
+        safe_join object.map { |o| filter_chip_tag(**filter_attrs(kind, o), **) }
       else
-        filter_button_tag(**filter_attrs(kind, object), **)
+        filter_chip_tag(**filter_attrs(kind, object), **)
       end
     end
 
