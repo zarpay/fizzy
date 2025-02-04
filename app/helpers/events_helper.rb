@@ -65,8 +65,13 @@ module EventsHelper
       "Popped by #{ event.creator.name }"
     when "staged"
       "#{event.creator.name} moved to #{event.stage_name}."
+    when "due_date_added"
+      "#{event.creator.name} set the date to #{event.particulars.dig('particulars', 'due_date').to_date.strftime('%B %-d')}"
+    when "due_date_changed"
+      "#{event.creator.name} changed the date to #{event.particulars.dig('particulars', 'due_date').to_date.strftime('%B %-d')}"
+    when "due_date_removed"
+      "#{event.creator.name} removed the date"
     end
-    # FIXME: Should track dates(added/changed) and perhaps "renamed"
   end
 
   def event_action_icon(event)
@@ -79,6 +84,8 @@ module EventsHelper
       "bolt"
     when "unassigned"
       "remove-med"
+    when "due_date_added", "due_date_changed"
+      "calendar"
     else
       "check"
     end

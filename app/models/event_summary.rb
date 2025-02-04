@@ -27,6 +27,12 @@ class EventSummary < ApplicationRecord
         "#{event.creator.name} moved this to '#{event.stage_name}'."
       when "unstaged"
         "#{event.creator.name} removed this from '#{event.stage_name}'."
+      when "due_date_added"
+        "#{event.creator.name} set due date to #{event.particulars.dig('particulars', 'due_date').to_date.strftime('%B %-d')}."
+      when "due_date_changed"
+        "#{event.creator.name} changed due date to #{event.particulars.dig('particulars', 'due_date').to_date.strftime('%B %-d')}."
+      when "due_date_removed"
+        "#{event.creator.name} removed the date."
       end
     end
 

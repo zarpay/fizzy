@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_01_21_174109) do
+ActiveRecord::Schema[8.1].define(version: 2025_02_04_211520) do
   create_table "accesses", force: :cascade do |t|
     t.integer "bucket_id", null: false
     t.integer "user_id", null: false
@@ -148,6 +148,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_01_21_174109) do
     t.datetime "updated_at", null: false
     t.integer "summary_id", null: false
     t.integer "bubble_id", null: false
+    t.date "due_date"
     t.index ["bubble_id"], name: "index_events_on_bubble_id"
     t.index ["creator_id"], name: "index_events_on_creator_id"
     t.index ["summary_id", "action"], name: "index_events_on_summary_id_and_action"

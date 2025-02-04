@@ -10,6 +10,7 @@ class Bubble < ApplicationRecord
   has_one_attached :image, dependent: :purge_later
 
   before_save :set_default_title
+  after_save :track_due_date_change, if: :saved_change_to_due_on?
 
   scope :reverse_chronologically, -> { order created_at: :desc, id: :desc }
   scope :chronologically, -> { order created_at: :asc, id: :asc }
@@ -32,6 +33,18 @@ class Bubble < ApplicationRecord
   end
 
   private
+    def track_due_date_change
+      if due_on.present?
+        if due_on_before_last_save.nil?
+          track_event("due_date_added", particulars: { due_date: due_on })
+        else
+          track_event("due_date_changed", particulars: { due_date: due_on })
+        end
+      elsif due_on_before_last_save.present?
+        track_event("due_date_removed")
+      end
+    end
+
     def set_default_title
       self.title = title.presence || "Untitled"
     end
