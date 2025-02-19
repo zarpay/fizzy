@@ -571,7 +571,7 @@
 }
 
 .bubble__actions-container {
-  background-color: color-mix(in srgb, var(--bubble-color) 15%, var(--color-bg));
+  background-color: color-mix(in srgb, var(--bubble-color) 25%, var(--color-bg));
   margin-block-start: -0.7em;
   position: relative;
   z-index: 1;
