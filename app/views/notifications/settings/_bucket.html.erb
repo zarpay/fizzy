@@ -8,7 +8,7 @@
       <hr class="separator--horizontal flex-item-grow" style="--border-color: var(--color-subtle-dark); --border-style: dashed" aria-hidden="true">
 
       <label class="switch">
-        <%= form.checkbox :subscribed, checked: bucket.subscribed_by?(Current.user), id: dom_id(bucket, :subscribed),
+        <%= form.checkbox :subscribed, checked: bucket.subscribed_by?(user), id: dom_id(bucket, :subscribed),
               class: "switch__input", include_hidden: false, data: { action: "form#submit" } %>
           <span class="switch__btn round"></span>
           <span class="for-screen-reader">Enable notifications for this bucket</span>
