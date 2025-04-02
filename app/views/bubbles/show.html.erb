@@ -3,7 +3,7 @@
 <% content_for :header do %>
   <% if @bubble.creating? && @bubble.can_recover_abandoned_creation? %>
     <div class="fill-selected position-sticky flex align-center gap-half justify-center border-block margin-block-end"
-          style="view-transition-name: draft-banner; --bubble-color: <%= @bubble.color %>;">
+      style="view-transition-name: draft-banner; --bubble-color: <%= @bubble.color %>;">
       You have an unsaved work. Would you like to continue where you left off?
       <%= button_to bucket_bubble_recover_path(@bubble.bucket, @bubble), class: "btn btn--reversed", data: { turbo_action: "replace" } do %>
         <span>Restore</span>
@@ -13,25 +13,19 @@
 
   <% if @bubble.drafted? %>
     <div class="fill-selected position-sticky flex align-center gap-half fill-highlight justify-center border-block margin-block-end"
-          style="view-transition-name: draft-banner;">
+      style="view-transition-name: draft-banner;">
       This is a draft, it’s only visible to you.
       <%= render "bubbles/publish", bubble: @bubble %>
     </div>
   <% end %>
 
   <nav class="align-start max-width">
-    <%= link_to root_path, class: "btn", data: { controller: "hotkey", action: "keydown.esc@document->hotkey#click" } do %>
+    <%= link_to root_path, class: "btn flex-item-justify-start", data: { controller: "hotkey", action: "keydown.esc@document->hotkey#click" } do %>
       <%= icon_tag "home" %>
       <span class="for-screen-reader">Home</span>
     <% end %>
 
-    <%= link_to "#", class: "btn flex-item-justify-start", data: { controller: "back-navigation hotkey", action: "keydown.esc@document->hotkey#click", back_navigation_fallback_destination_value: bubbles_path(bucket_id: @bubble.bucket) } do %>
-      <%= icon_tag "arrow-left" %>
-      <span class="for-screen-reader">Go Back</span>
-    <% end %>
-
     <div class="btn btn--placeholder flex-item-justify-end"></div>
-    <div class="btn btn--placeholder"></div>
   </nav>
 <% end %>
 
@@ -51,11 +45,11 @@
       <% end %>
     </div>
 
-    
+
     <% if @bubble.published? %>
       <div class="card__actions card__actions--right flex flex-column gap-half">
-        <%= turbo_frame_tag dom_id(@bubble, :watch), src: bucket_bubble_watch_path(@bubble.bucket, @bubble) %>
-        <%= turbo_frame_tag dom_id(@bubble, :pin), src: bucket_bubble_pin_path(@bubble.bucket, @bubble) %>
+        <%= turbo_frame_tag dom_id(@bubble, :watch), src: bucket_bubble_watch_path(@bubble.bucket, @bubble), refresh: :morph %>
+        <%= turbo_frame_tag dom_id(@bubble, :pin), src: bucket_bubble_pin_path(@bubble.bucket, @bubble), refresh: :morph %>
       </div>
     <% end %>
   </div>
@@ -77,12 +71,12 @@
 
         <div class="comment__content flex-inline flex-column full-width">
           <div class="comment__body txt-align-start">
-            <form data-controller="outlet-auto-save paste" 
-                class="flex flex-column gap full-width"
-                data-outlet-auto-save-auto-save-outlet="#bubble_form"
-                data-action="paste->paste#pasteFiles">
-              <%= tag.house_md @bubble.draft_comment, name: "bubble[draft_comment]", class: "input comment__input", 
-                    form: "bubble_form", 
+            <form data-controller="outlet-auto-save paste"
+              class="flex flex-column gap full-width"
+              data-outlet-auto-save-auto-save-outlet="#bubble_form"
+              data-action="paste->paste#pasteFiles">
+              <%= tag.house_md @bubble.draft_comment, name: "bubble[draft_comment]", class: "input comment__input",
+                    form: "bubble_form",
                     placeholder: new_comment_placeholder(@bubble),
                     data: { action: "house-md:change->outlet-auto-save#change focusout->outlet-auto-save#submit", uploads_url: uploads_url(format: "json") } %>
             </form>
@@ -99,3 +93,8 @@
     </div>
   <% end %>
 </div>
+
+<%= link_to "Go back", "#", class: "btn", hidden: true,
+      data: { controller: "back-navigation hotkey",
+            action: "keydown.esc@document->hotkey#click",
+            back_navigation_fallback_destination_value: bubbles_path(bucket_id: @bubble.bucket) } %>
