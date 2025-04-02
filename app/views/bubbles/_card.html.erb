@@ -1,4 +1,4 @@
-<% cache bubble do %>
+<% cache [ bubble, previewing_card? ] do %>
   <article class="card shadow border flex flex-column position-relative txt-align-start full-width border-radius"
         style="--bubble-color: <%= bubble.color %>; view-transition-name: <%= dom_id(bubble, :ticket) %>;"
         id="<%= dom_id(bubble, :ticket) %>">
