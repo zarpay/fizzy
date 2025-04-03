@@ -1,5 +1,5 @@
 <% cache [ bubble, previewing_card? ] do %>
-  <article class="card shadow border flex flex-column position-relative txt-align-start full-width border-radius"
+  <article class="card shadow flex flex-column position-relative txt-align-start full-width border-radius"
         style="--bubble-color: <%= bubble.color %>; view-transition-name: <%= dom_id(bubble, :ticket) %>;"
         id="<%= dom_id(bubble, :ticket) %>">
     <header class="card__header flex align-center gap min-width">
@@ -40,7 +40,7 @@
       <% end %>
     </div>
 
-    <footer class="card__footer full-width flex align-start gap">
+    <footer class="card__footer full-width flex align-end gap">
       <%= render "bubbles/people", bubble: bubble %>
       <%= render "bubbles/meta", bubble: bubble %>
     </footer>
@@ -50,10 +50,10 @@
     </div>
 
     <% if bubble.popped? %>
-      <div class="card__popped">
-        <span class="card__popped-title"><%= bubble.popped_by.system? ? "Closed" : "Completed" %></span>
+      <div class="card__completed">
+        <span class="card__completed-title"><%= bubble.popped_by.system? ? "Closed" : "Completed" %></span>
         <strong><%= bubble.popped_at.strftime("%b %d, %Y") %></strong>
-        <span>by <span class="card__popped-by"><%= bubble.popped_by.name %></span></span>
+        <span>by <span class="card__completed-by"><%= bubble.popped_by.name %></span></span>
       </div>
     <% end %>
   </article>

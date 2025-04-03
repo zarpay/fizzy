@@ -1,45 +1,37 @@
-<div class="card__meta flex txt-tight-lines txt-uppercase">
-  <div class="flex flex-column gap txt-align-end">
-    <span class="pad-inline overflow-ellipsis"><%= bubble.creating? ? "Added" : "Updated" %> 
-      <%= days = (Date.current - bubble.updated_at.to_date).to_i
+<div class="card__meta txt-tight-lines txt-uppercase">
+  <span class="overflow-ellipsis txt-align-end"><%= bubble.creating? ? "Added" : "Updated" %>
+    <%= days = (Date.current - bubble.updated_at.to_date).to_i
+        case days
+        when 0 then "<strong>Today</strong>".html_safe
+        when 1 then "<strong>Yesterday</strong>".html_safe
+        else "<strong>#{days}</strong> days ago".html_safe
+        end %>
+  </span>
+
+  <span class="overflow-ellipsis">
+    <strong><%= bubble.comments_count %></strong> <%= bubble.comments_count == 1 ? "comment" : "comments" %>
+  </span>
+
+  <span class="overflow-ellipsis">
+    <% if bubble.creating? %>
+      Expires
+      <%= days = (bubble.auto_pop_at.to_date - Date.current).to_i
+          case days
+          when 0 then "<strong>Today</strong>".html_safe
+          else "in <strong>#{days}</strong> days".html_safe
+          end %>
+    <% else %>
+      Added
+      <%= days = (Date.current - bubble.created_at.to_date).to_i
           case days
           when 0 then "<strong>Today</strong>".html_safe
           when 1 then "<strong>Yesterday</strong>".html_safe
           else "<strong>#{days}</strong> days ago".html_safe
           end %>
-    </span>
-
-    <hr class="full-width separator--horizontal unpad margin-none">
-
-    <% if bubble.creating? %>
-      <span class="pad-inline overflow-ellipsis">Expires 
-        <%= days = (bubble.auto_pop_at.to_date - Date.current).to_i
-            case days
-            when 0 then "<strong>Today</strong>".html_safe
-            else "in <strong>#{days}</strong> days".html_safe
-            end %>
-      </span>
-    <% else %>
-      <span class="pad-inline overflow-ellipsis">Added 
-        <%= days = (Date.current - bubble.created_at.to_date).to_i
-            case days
-            when 0 then "<strong>Today</strong>".html_safe
-            when 1 then "<strong>Yesterday</strong>".html_safe
-            else "<strong>#{days}</strong> days ago".html_safe
-            end %>
-      </span>
     <% end %>
-  </div>
+  </span>
 
-  <hr class="separator margin-none unpad">
-
-  <div class="flex flex-column gap txt-align-start">
-    <span class="pad-inline overflow-ellipsis">
-      <strong><%= bubble.comments_count %></strong> <%= bubble.comments_count == 1 ? "comment" : "comments" %>
-    </span>
-
-    <hr class="full-width separator--horizontal unpad margin-none">
-    
+  <span>
     <%= render "bubbles/boosts", bubble: bubble %>
-  </div>
+  </span>
 </div>

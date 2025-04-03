@@ -275,8 +275,9 @@
 
   .card__bucket {
     background-color: var(--bubble-color);
-    font-weight: 800;
-    letter-spacing: 0.5ch;
+    border-radius: var(--border-radius) 0 var(--border-radius) 0;
+    font-weight: 700;
+    letter-spacing: 0.4ch;
     padding: var(--block-space-half) var(--inline-space-double);
   }
 
@@ -352,7 +353,14 @@
   }
 
   .card__footer {
+    font-size: var(--text-small);
+    font-weight: 500;
     margin-block-end: var(--block-space);
+  }
+
+  .card__reported,
+  .card__assignees {
+    gap: 0.25ch;
   }
 
   .cards .card__assignees:not(:has(.avatar)) {
@@ -362,25 +370,32 @@
   }
 
   .card__meta {
-    --border-color: var(--bubble-color);
-    --row-gap: 0.25em;
+    display: grid;
+    grid-template-columns: auto auto;
 
-    margin-inline-start: var(--inline-space-double);
-
-    strong {
-      font-size: 1.1em;
-      font-weight: 900;
+    > span:nth-child(odd) {
+      border-inline-end: 1px solid var(--color-ink);
+      padding-inline-end: 1ch;
     }
 
-    .separator {
-      height: calc(2lh + 2ex);
+    > span:nth-child(even) {
+      padding-inline-start: 1ch;
+    }
+
+    > span:nth-child(-n+2) {
+      border-block-end: 1px solid var(--color-ink);
+      padding-block-end: 0.5ch;
+    }
+
+    > span:nth-child(n+3) {
+      padding-block-start: 0.5ch;
     }
   }
 
-  .card__popped {
+  .card__completed {
     align-items: center;
     aspect-ratio: 7/4;
-    border: var(--block-space-half) solid var(--bubble-color);
+    border: 0.5ch solid var(--bubble-color);
     display: flex;
     flex-direction: column;
     inset: auto var(--block-space) var(--block-space-double) auto;
@@ -391,23 +406,26 @@
     z-index: -1;
   }
 
-  .card__popped-by {
+  .card__completed-by {
     border-block-end: 1px dashed currentcolor;
   }
 
-  .card__popped-title {
+  .card__completed-title {
+    --pos: 0.15ch;
+    --neg: -0.15ch;
+
     color: var(--color-ink-reversed);
     font-size: var(--text-rel-large);
     font-weight: 900;
     text-shadow:
-     -2px -2px 0 var(--bubble-color),
-     -2px 0 0 var(--bubble-color),
-     -2px 2px 0 var(--bubble-color),
-      2px -2px 0 var(--bubble-color),
-      2px 0 0 var(--bubble-color),
-      2px 2px 0 var(--bubble-color),
-      0 -2px 0 var(--bubble-color),
-      0 2px 0 var(--bubble-color);
+     var(--neg) var(--neg) 0 var(--bubble-color),
+     var(--neg) 0 0 var(--bubble-color),
+     var(--neg) var(--pos) 0 var(--bubble-color),
+      var(--pos) var(--neg) 0 var(--bubble-color),
+      var(--pos) 0 0 var(--bubble-color),
+      var(--pos) var(--pos) 0 var(--bubble-color),
+      0 var(--neg) 0 var(--bubble-color),
+      0 var(--pos) 0 var(--bubble-color);
     text-transform: uppercase;
   }
 
