@@ -11,6 +11,8 @@ class Card < ApplicationRecord
 
   has_markdown :description
 
+  before_save :set_default_title
+
   scope :reverse_chronologically, -> { order created_at: :desc, id: :desc }
   scope :chronologically, -> { order created_at: :asc, id: :asc }
   scope :latest, -> { order updated_at: :desc, id: :desc }
@@ -25,11 +27,12 @@ class Card < ApplicationRecord
     end
   end
 
-  def title=(new_title)
-    self[:title] = new_title.presence || "Untitled"
-  end
-
   def cache_key
     [ super, collection.name ].compact.join("/")
   end
+
+  private
+    def set_default_title
+      self.title = "Untitled" if published? && title.blank?
+    end
 end

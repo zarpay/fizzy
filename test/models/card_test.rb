@@ -120,4 +120,12 @@ class CardTest < ActiveSupport::TestCase
 
     assert_includes card.cache_key, ApplicationRecord.current_tenant, "cache key must always include the tenant"
   end
+
+  test "for published cards, it should set the default title 'Untitiled' when not provided" do
+    card = collections(:writebook).cards.create!
+    assert_nil card.title
+
+    card.publish
+    assert_equal "Untitled", card.reload.title
+  end
 end
