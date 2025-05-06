@@ -266,7 +266,7 @@
 
     .card:has(&),
     .card-perma:has(&) {
-      --card-color: var(--card-color-1) !important;
+      --card-color: var(--color-card-complete) !important;
     }
   }
 
