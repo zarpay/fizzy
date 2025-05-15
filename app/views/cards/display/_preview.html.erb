@@ -29,12 +29,10 @@
 
     <%= render "cards/display/common/background", card: card %>
 
-    <% if card.closing_soon? %>
-      <%= render "cards/display/preview/bubble", label: "Closes", days: card.days_until_close, class: "bubble--closing" %>
-    <% end %>
-
-    <% if card.reconsidering_soon? %>
-      <%= render "cards/display/preview/bubble", label: "Falls Back", days: card.days_until_close, class: "bubble--considering" %>
+    <% if card.considering? %>
+      <%= render "cards/display/preview/bubble", card: card, style: "closing" %>
+    <% elsif card.doing? %>
+      <%= render "cards/display/preview/bubble", card: card, style: "considering" %>
     <% end %>
   <% end %>
 <% end %>

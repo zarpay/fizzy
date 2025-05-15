@@ -29,20 +29,12 @@ module Card::Engageable
     last_active_at + STAGNATED_AFTER if last_active_at
   end
 
-  def days_until_reconsider
-    (auto_reconsider_at.to_date - Date.current).to_i if auto_reconsider_at
-  end
-
   def doing?
     open? && published? && engagement.present?
   end
 
   def considering?
     open? && published? && engagement.blank?
-  end
-
-  def reconsidering_soon?
-    doing? && Time.current >= auto_reconsider_at - AUTO_RECONSIDER_REMINDER_BEFORE
   end
 
   def engage
