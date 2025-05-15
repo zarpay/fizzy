@@ -10,8 +10,8 @@ class Command::Ai::Parser
   end
 
   def parse(query)
-    query_json = resolve_named_params_to_ids command_translator.as_normalized_json(query)
-    build_composite_command_for query_json, query
+    normalized_query = resolve_named_params_to_ids command_translator.translate(query)
+    build_composite_command_for normalized_query, query
   end
 
   private
@@ -19,11 +19,11 @@ class Command::Ai::Parser
       Command::Ai::Translator.new(context)
     end
 
-    def build_composite_command_for(query_json, query)
-      query_context = context_from_query(query_json)
+    def build_composite_command_for(normalized_query, query)
+      query_context = context_from_query(normalized_query)
       resolved_context = query_context || context
 
-      commands = Array.wrap(commands_from_query(query_json, resolved_context))
+      commands = Array.wrap(commands_from_query(normalized_query, resolved_context))
 
       if query_context
         commands.unshift Command::VisitUrl.new(user: user, url: query_context.url, context: resolved_context)
@@ -32,15 +32,15 @@ class Command::Ai::Parser
       Command::Composite.new(title: query, commands: commands, user: user, line: query, context: resolved_context)
     end
 
-    def commands_from_query(query_json, context)
+    def commands_from_query(normalized_query, context)
       parser = Command::Parser.new(context)
-      if command_lines = query_json["commands"].presence
+      if command_lines = normalized_query["commands"].presence
         command_lines.collect { parser.parse(it) }
       end
     end
 
-    def resolve_named_params_to_ids(query_json)
-      query_json.tap do |query_json|
+    def resolve_named_params_to_ids(normalized_query)
+      normalized_query.tap do |query_json|
         if query_context = query_json["context"].presence
           query_context["assignee_ids"] = query_context["assignee_ids"]&.filter_map { |name| assignee_from(name)&.id }
           query_context["creator_id"] = assignee_from(query_context["creator_id"])&.id if query_context["creator_id"]

@@ -29,6 +29,6 @@ class Command::Ai::TranslatorTest < ActionDispatch::IntegrationTest
       user = users(:david)
       context = Command::Parser::Context.new(user, url: @url)
       translator = Command::Ai::Translator.new(context)
-      puts translator.as_normalized_json(query)
+      puts translator.translate(query)
     end
 end

@@ -7,15 +7,16 @@ class Command::Ai::Translator
     @context = context
   end
 
-  def as_normalized_json(query)
-    response = translate_query_with_llm query
-    Rails.logger.info "*** Commands: #{response.content}"
-    compact JSON.parse(response.content)
+  def translate(query)
+    response = translate_query_with_llm(query)
+    Rails.logger.info "*** Commands: #{response}"
+    compact JSON.parse(response)
   end
 
   private
     def translate_query_with_llm(query)
-      Rails.cache.fetch(cache_key_for(query)) { chat.ask query }
+      response = Rails.cache.fetch(cache_key_for(query)) { chat.ask query }
+      response.content
     end
 
     def cache_key_for(query)
