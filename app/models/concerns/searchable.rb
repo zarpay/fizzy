@@ -4,8 +4,8 @@ module Searchable
   included do
     has_one :search_embedding, as: :record, dependent: :destroy, class_name: "Search::Embedding"
 
-    after_create_commit  :refresh_search_embedding
-    after_update_commit  :refresh_search_embedding
+    after_create_commit  :refresh_search_embedding_later
+    after_update_commit  :refresh_search_embedding_later
     after_destroy_commit :remove_search_embedding
   end
 
@@ -53,6 +53,10 @@ module Searchable
 
     def remove_from_search_index
       execute_sql_with_binds "delete from #{search_table} where rowid = ?", id
+    end
+
+    def refresh_search_embedding_later
+      Search::RefreshSearchEmbeddingJob.perform_later(self)
     end
 
     def execute_sql_with_binds(*statement)
