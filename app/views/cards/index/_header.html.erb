@@ -30,20 +30,20 @@
         <%= render "events/filter/header" %>
         <% if Current.user.collections.many? %>
           <strong class="popup__group-title">Collections</strong>
-          <menu contents>
+          <ul class="popup__list">
             <%= render "cards/index/collections_filter", filter: filter %>
-          </menu>
+          </ul>
         <% end %>
 
         <strong class="popup__group-title">Tags</strong>
-        <div class="flex flex-column max-width popup__list full-width">
+        <ul class="popup__list">
           <%= render partial: "events/filter/tag", collection: Tag.all.alphabetically, as: :tag %>
-        </div>
+        </ul>
 
         <strong class="popup__group-title">People</strong>
-        <div class="flex flex-column max-width popup__list full-width">
+        <ul class="popup__list">
           <%= render partial: "events/filter/user", collection: User.active.alphabetically, as: :user %>
-        </div>
+        </ul>
 
         <% if platform.desktop? %>
           <footer class="popup__footer">

@@ -13,7 +13,7 @@
             autocomplete: "off", data: { filter_target: "input", action: "input->filter#filter" } %>
     <% end %>
 
-    <ul class="flex flex-column full-width popup__list margin-none unpad max-width" data-filter-target="list">
+    <ul class="popup__list" data-filter-target="list">
       <% @tags.each do |tag| %>
         <li class="popup__group flex align-center full-width" data-value="<%= tag.hashtag.downcase %>" data-filter-target="item" data-navigable-list-target="item">
           <%= button_to card_taggings_path(@card, params: { tag_title: tag.title }), method: :post,

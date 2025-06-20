@@ -19,7 +19,7 @@
               type: "search", autocorrect: "off", autocomplete: "off", data: { "1p-ignore": "true", filter_target: "input", action: "input->filter#filter" } %>
         <% end %>
 
-        <ul class="flex flex-column full-width popup__list margin-block-start-half margin-none-inline margin-none-block-end unpad max-width" data-filter-target="list">
+        <ul class="popup__list margin-block-start-half margin-none-block-end" data-filter-target="list">
           <% Current.user.collections.alphabetically.each do |collection| %>
             <li class="popup__group flex align-center full-width" data-value="<%= collection.name.downcase %>" data-filter-target="item" data-navigable-list-target="item">
               <%= button_to card_collection_path(card, params: { collection_id: collection.id }), method: :patch,

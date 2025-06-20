@@ -122,6 +122,12 @@
   }
 
   .popup__list {
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    margin: 0;
+    max-inline-size: 100%;
+    padding: 0;
     row-gap: 2px;
   }
 

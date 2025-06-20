@@ -1,5 +1,5 @@
 <strong class="popup__group-title">Collections</strong>
-<%= form_with url: cards_path, method: :get, class: "flex flex-column max-width popup__list full-width",
+<%= form_with url: cards_path, method: :get, class: "popup__list",
       data: { controller: "form" } do |form| %>
   <% if Current.user.collections.one? %>
     <%= link_to cards_path, class: "popup__group flex align-center", data: { value: Current.user.collections.first.name.downcase, filter_target: "item", navigable_list_target: "item" } do %>

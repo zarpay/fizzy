@@ -25,17 +25,17 @@
               type: "search", autocorrect: "off", autocomplete: "off", data: { "1p-ignore": "true", filter_target: "input", action: "input->filter#filter" } %>
         <%= render "events/filter/header" %>
         <% if Current.user.collections.many? %>
-          <menu contents>
+          <ul class="popup__list">
             <%= render "cards/show/collections" %>
-          </menu>
+          </ul>
         <% end %>
         <strong class="popup__group-title">Tags</strong>
-        <div class="flex flex-column max-width popup__list full-width">
+        <div class="popup__list">
           <%= render partial: "events/filter/tag", collection: Tag.all.alphabetically, as: :tag %>
         </div>
 
         <strong class="popup__group-title">People</strong>
-        <div class="flex flex-column max-width popup__list full-width">
+        <div class="popup__list">
           <%= render partial: "events/filter/user", collection: User.active.alphabetically, as: :user %>
         </div>
 

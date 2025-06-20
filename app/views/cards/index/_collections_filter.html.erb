@@ -1,4 +1,4 @@
-<%= form_with url: cards_path, method: :get, class: "flex flex-column max-width popup__list full-width",
+<%= form_with url: cards_path, method: :get, class: "popup__list",
       data: { controller: "form" } do |form| %>
   <% filter.as_params.except(:collection_ids).each do |key, value| %>
     <%= filter_hidden_field_tag key, value %>

@@ -26,24 +26,24 @@
 		<%= render "events/filter/header" %>
 
 		<strong class="popup__group-title">Collections</strong>
-		<%= form_with url: events_path, method: :get, class: "flex flex-column max-width popup__list full-width",
+		<%= form_with url: events_path, method: :get, class: "popup__list",
 					data: { controller: "form" } do |form| %>
 			<% if Current.user.collections.many? %>
-				<menu contents>
+				<ul class="popup__list">
 					<%= render "events/filter/custom_collections" %>
 					<%= render "events/filter/all_collections_option", form: form, filter: filter %>
 					<%= render partial: "events/filter/collection_option", collection: Current.user.collections.alphabetically, as: :collection, locals: { form: form, filter: filter } %>
-				</menu>
+				</ul>
 			<% end %>
 		<% end %>
 
 		<strong class="popup__group-title">Tags</strong>
-		<div class="flex flex-column max-width popup__list full-width">
+		<div class="popup__list">
 			<%= render partial: "events/filter/tag", collection: Tag.all.alphabetically, as: :tag %>
 		</div>
 
 		<strong class="popup__group-title">People</strong>
-		<div class="flex flex-column max-width popup__list full-width">
+		<div class="popup__list">
 			<%= render partial: "events/filter/user", collection: User.active.alphabetically, as: :user %>
 		</div>
 

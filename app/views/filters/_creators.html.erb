@@ -15,7 +15,7 @@
         aria-label="Added by…" aria-description="Added by…"
         data-dialog-target="dialog" data-action="turbo:before-cache@document->dialog#close">
       <strong class="popup__title margin-block-start-half pad-inline-half">Added by…</strong>
-      <%= form_with url: cards_path, method: :get, class: "flex flex-column full-width popup__list",
+      <%= form_with url: cards_path, method: :get, class: "popup__list",
             data: { controller: "form" } do |form| %>
         <% filter.as_params.except(:creator_ids).each do |key, value| %>
           <%= filter_hidden_field_tag key, value %>
