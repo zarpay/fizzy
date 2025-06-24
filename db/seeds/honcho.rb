@@ -1,15 +1,16 @@
 create_tenant "Honcho"
 
 david = find_or_create_user "David Heinemeier Hansson", "david@37signals.com"
-jason = find_or_create_user "Jason Zimdars", "jz@37signals.com"
+jason = find_or_create_user "Jason Fried", "jason@37signals.com"
+jz    = find_or_create_user "Jason Zimdars", "jz@37signals.com"
 kevin = find_or_create_user "Kevin McConnell", "kevin@37signals.com"
 jorge = find_or_create_user "Jorge Manrubia", "jorge@37signals.com"
-mike = find_or_create_user "Mike Dalessio", "mike@37signals.com"
+mike  = find_or_create_user "Mike Dalessio", "mike@37signals.com"
 
 login_as david
 
 # Array of authors for random assignment
-authors = [ david, jason, kevin, jorge, mike ]
+authors = [ david, jason, jz, kevin, jorge, mike ]
 
 # Card titles for reuse across collections
 card_titles = [
