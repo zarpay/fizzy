@@ -31,6 +31,25 @@
         </strong>
 
         <%= yield %>
+        <% if event.action == "card_published" %>
+          <span class="txt-break overflow-line-clamp txt-tight-lines">
+            <%= format_excerpt(event.card&.description, length: 200) -%>
+          </span>
+
+          <% if event.card&.has_attachments? %>
+            <span class="event_attachments margin-block-half flex align-center gap-half">
+              <% event.card.attachments.each do |attachment| %>
+                <% if attachment.representable? %>
+                  <%= image_tag attachment, class: "attachment attachment--image" %>
+                <% else %>
+                  <div class="attachment attachment--file attachment--<%= attachment.filename.extension -%>">
+                    <span class="attachment__icon"><%= attachment.filename.extension&.downcase.presence || "unknown" %></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </span>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>
