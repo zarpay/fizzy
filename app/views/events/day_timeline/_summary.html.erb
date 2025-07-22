@@ -1,17 +1,19 @@
-<% if day_timeline.summarized? %>
-  <div class="position-relative">
-    <%= render "events/day_timeline/activity_summary", summary: day_timeline.summary %>
+<div class="events__activity-summary margin-block txt-small border border-radius">
+  <% if !day_timeline.summarized? %>
+    <div class="position-relative">
+      <%= render "events/day_timeline/activity_summary", summary: day_timeline.summary %>
 
-    <% if Current.user.staff? %>
-      <%= link_to admin_prompt_sandbox_path(day: day_timeline.day), class: "btn txt-xx-small" do %>
-        <%= icon_tag "bolt" %>
-        <span class="for-screen-reader">Prompt sandbox</span>
+      <% if Current.user.staff? %>
+        <%= link_to admin_prompt_sandbox_path(day: day_timeline.day), class: "btn txt-xx-small" do %>
+          <%= icon_tag "bolt" %>
+          <span class="for-screen-reader">Prompt sandbox</span>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-<% else %>
-  <div id="<%= day_timeline.summary_key %>">
-    <%= auto_submit_form_with url: events_activity_summaries_path(day: day_timeline.day, **day_timeline.filter.as_params), method: :post %>
-    Generating summary...
-  </div>
-<% end %>
+    </div>
+  <% else %>
+    <div id="<%= day_timeline.summary_key %>">
+      <%= auto_submit_form_with url: events_activity_summaries_path(day: day_timeline.day, **day_timeline.filter.as_params), method: :post %>
+      Generating summary...
+    </div>
+  <% end %>
+</div>
