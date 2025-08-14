@@ -1,6 +1,8 @@
 class Conversations::MessagesController < ApplicationController
   before_action :set_conversation
 
+  rate_limit to: 5, within: 30.seconds, by: -> { Current.user.cache_key }, only: :create
+
   def index
     @messages = paginated_messages(@conversation.messages)
   end
