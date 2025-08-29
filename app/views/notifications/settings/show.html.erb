@@ -12,11 +12,14 @@
   </nav>
 <% end %>
 
-<%= render "notifications/settings/push_notifications" %>
+<section class="settings">
+  <div class="settings__panel settings__panel--users panel shadow center flex flex-column gap-half">
+    <h2 class="txt-medium txt-uppercase divider">Collections</h2>
+    <%= render partial: "notifications/settings/collection", collection: @collections, locals: { user: Current.user } %>
+  </div>
 
-<%= render "notifications/settings/email", settings: @settings %>
-
-<section class="panel unpad borderless center flex flex-column gap-half">
-  <h2 class="txt-medium txt-uppercase divider">Collections</h2>
-  <%= render partial: "notifications/settings/collection", collection: @collections, locals: { user: Current.user } %>
+  <div class="settings__panel panel shadow center">
+    <%= render "notifications/settings/push_notifications" %>
+    <%= render "notifications/settings/email", settings: @settings %>
+  </div>
 </section>
