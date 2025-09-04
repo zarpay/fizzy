@@ -10,11 +10,13 @@ class Event::Summarizer
     Help me make sense of the week’s activity in a news style format with bold headlines and short summaries.
       - Pick the top items to help me see patterns and milestones that I might not pick up on by looking at each individual entry.
       - Use a conversational tone without business speak.
-      - Link to the issues naturally in context when possible, don’t mention card numbers directly.
+      - Link to the issues naturally in context when possible, *do not* mention card numbers directly.
 
     # Use this format:
       - A single lead headline (### heading level 3) and blurb at the top that captures the overall theme of the week.
       - Then 6 (or fewer) headlines (#### heading level 4) and blurbs for the most important stories.
+      - *Do not* add <hr> elements.
+      - *Do not* insert a closing summary at the end.
     Markdown link format: [anchor text](/full/path/).
       - Preserve the path exactly as provided (including the leading "/").
       - When linking to a Collection, paths should be in this format: (/[account id slug]/cards?collection_ids[]=x)

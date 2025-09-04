@@ -92,6 +92,8 @@
         }
       }
     }
+
+    hr { display: none; }
   }
 
   .events__activity-generating-msg {
