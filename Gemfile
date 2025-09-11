@@ -71,3 +71,5 @@ group :test do
   gem "vcr"
   gem "mocha"
 end
+
+gem "fizzy-saas", path: "gems/fizzy-saas"
