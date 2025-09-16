@@ -19,20 +19,6 @@
     </h2>
 
     <div class="flex flex-column gap-half">
-      <%= form.label :url do %>
-        <strong>Payload URL</strong><br>
-        <p class="margin-none txt-x-small txt-subtle">This is the URL for the app that will receive payloads from Fizzy.</p>
-      <% end %>
-      <%= form.url_field :url,
-            required: true,
-            pattern: "https?://.*",
-            title: "Must be an http:// or https:// URL",
-            class: "input",
-            placeholder: "https://example.com",
-            data: { action: "keydown.esc@document->form#cancel" } %>
-    </div>
-
-    <div class="flex flex-column gap-half">
       <%= form.label :actions do %>
         <strong>Events</strong><br>
         <p class="margin-none txt-x-small txt-subtle">Trigger a call to the Payload URL when these things occur:</p>
