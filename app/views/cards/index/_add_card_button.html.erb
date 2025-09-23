@@ -1,18 +1,9 @@
 <% if collection = user_filtering.single_collection %>
   <div class="card card--new flex flex-column gap-half">
-    <div class="flex align-center gap justify-space-between">
-      <div class="btn btn--circle txt-x-small" style="visibility: hidden"><!-- layout placeholder --></div>
-
-      <%= button_to collection_cards_path(collection), method: :post, class: "btn btn--link", form: { data: { turbo_frame: "_top" } } do %>
-        <%= icon_tag "add" %>
-        <span>Add a card</span>
-      <% end %>
-
-      <button class="btn btn--circle txt-x-small column--new" style="margin-block: var(--cards-gap);">
-        <%= icon_tag "add" %>
-        <span class="for-screen-reader">Add a new column</span>
-      </button>
-    </div>
+    <%= button_to collection_cards_path(collection), method: :post, class: "btn btn--link", form: { data: { turbo_frame: "_top" } } do %>
+      <%= icon_tag "add" %>
+      <span>Add a card</span>
+    <% end %>
 
     <hr class="separator--horizontal full-width" aria-hidden="true">
 

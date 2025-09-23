@@ -2,8 +2,8 @@
   <%= turbo_frame_tag :card_columns do %>
     <div class="card-columns" data-controller="collapsible-columns" data-collapsible-columns-collapsed-class="is-collapsed">
       <div class="left-col">
-      <%= render "cards/index/engagement/on_deck", user_filtering: user_filtering, **on_deck.to_h %>
-        </div>
+        <%= render "cards/index/engagement/on_deck", user_filtering: user_filtering, **on_deck.to_h %>
+      </div>
 
       <%= render "cards/index/engagement/considering", user_filtering: user_filtering, **considering.to_h %>
 
@@ -15,6 +15,11 @@
         <% end %>
 
         <%= render "cards/index/engagement/closed", user_filtering: user_filtering, **closed.to_h %>
+
+        <button class="btn btn--circle txt-xx-small" style="margin-block: var(--cards-gap);">
+          <%= icon_tag "menu-dots-horizontal" %>
+          <span class="for-screen-reader">Add a new column, etc.</span>
+        </button>
       </div>
     </div>
   <% end %>
