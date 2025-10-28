@@ -29,7 +29,7 @@
               role: "checkbox", aria: { checked: filter.assignment_status.unassigned? } do %>
           <button type="button" class="btn popup__btn" data-action="dialog#close multi-selection-combobox#clear filter-settings#change form#submit">
             <span class="overflow-ellipsis flex-item-grow">No one</span>
-            <%= icon_tag "check", class: "checked flex-item-justify-end", "aria-hidden": true %>
+            <%= icon_tag "check", class: "checked flex-item-justify-end" %>
           </button>
         <% end %>
 
@@ -39,7 +39,7 @@
                 role: "checkbox", aria: { checked: filter.assignees.include?(user) } do %>
             <button type="button" class="btn popup__btn" data-action="dialog#close multi-selection-combobox#change filter-settings#change form#submit">
               <span class="overflow-ellipsis flex-item-grow"><%= user.name %></span>
-              <%= icon_tag "check", class: "checked flex-item-justify-end", "aria-hidden": true %>
+              <%= icon_tag "check", class: "checked flex-item-justify-end" %>
             </button>
           <% end %>
         <% end %>

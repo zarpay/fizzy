@@ -20,12 +20,12 @@
 
           <ul class="popup__list margin-block-start-half margin-none-block-end" data-filter-target="list">
             <% Current.user.collections.ordered_by_recently_accessed.each do |collection| %>
-              <li class="popup__item" data-filter-target="item" data-navigable-list-target="item">
+              <li class="popup__item" data-filter-target="item" data-navigable-list-target="item" aria-checked="<%= card.collection == collection %>">
                 <%= button_to card_collection_path(card, params: { collection_id: collection.id }), method: :patch,
                     class: "popup__btn btn",
                     form_class: "max-width flex-item-grow" do %>
                   <span class="overflow-ellipsis flex-item-grow"><%= collection.name %></span>
-                  <%= icon_tag "check", size: 18, class: "checked flex-item-no-shrink flex-item-justify-end", style: "--icon-size: 1em" if card.collection == collection %>
+                  <%= icon_tag "check", size: 18, class: "checked flex-item-no-shrink flex-item-justify-end", style: "--icon-size: 1em" %>
                 <% end %>
               </li>
             <% end %>

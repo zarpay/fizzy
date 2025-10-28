@@ -1,32 +1,35 @@
 <%= turbo_frame_tag @card, :tagging do %>
   <div class="flex-column full-width"
-    data-controller="filter navigable-list"
+    data-controller="form filter navigable-list"
     data-navigable-list-focus-on-selection-value="false"
     data-navigable-list-actionable-items-value="true"
     data-action="keydown->navigable-list#navigate filter:changed->navigable-list#reset dialog:show@document->navigable-list#reset"
   >
     <strong class="popup__title">Tag this…</strong>
 
-    <%= form_with url: card_taggings_path(@card), id: dom_id(@card, :tags_form), class: "flex flex-column gap-half full-width margin-block-half" do |form| %>
+    <%= form_with url: card_taggings_path(@card),
+          id: dom_id(@card, :tags_form),
+          data: { controller: "form", action: "submit->form#preventEmptySubmit" },
+          class: "flex flex-column gap-half full-width margin-block-half" do |form| %>
       <%= form.text_field :tag_title, placeholder: @tags.any? ? "Add a new tag or filter…" : "Name this tag…", class: "input txt-small full-width",
-            autocomplete: "off", data: { filter_target: "input", action: "input->filter#filter" } %>
+            autocomplete: "off", data: { filter_target: "input", form_target: "input", action: "input->filter#filter" } %>
     <% end %>
 
     <ul class="popup__list" data-filter-target="list">
       <li class="popup__item" data-navigable-list-target="item">
-        <%= button_tag "Create a new tag", type: "submit", form: dom_id(@card, :tags_form), class: "btn popup__btn" do %>
+        <%= button_tag "Create a new tag", type: "submit", form: dom_id(@card, :tags_form), class: "btn popup__btn", data: { form_target: "submit" } do %>
           <%= icon_tag "add" %>
           <span>Create tag</span>
         <% end %>
       </li>
 
       <% @tags.each do |tag| %>
-        <li class="popup__item" data-filter-target="item" data-navigable-list-target="item">
+        <li class="popup__item" data-filter-target="item" data-navigable-list-target="item" aria-checked="<%= @card.tagged_with?(tag) %>">
           <%= button_to card_taggings_path(@card, params: { tag_title: tag.title }), method: :post,
               class: "popup__btn btn",
               form_class: "max-width flex-item-grow" do %>
             <span class="overflow-ellipsis flex-item-grow"><%= tag.hashtag %></span>
-            <%= icon_tag "check", size: 18, class: "checked flex-item-no-shrink flex-item-justify-end", style: "--icon-size: 1em" if @card.tagged_with?(tag) %>
+            <%= icon_tag "check", size: 18, class: "checked flex-item-no-shrink flex-item-justify-end", style: "--icon-size: 1em" %>
           <% end %>
         </li>
       <% end %>

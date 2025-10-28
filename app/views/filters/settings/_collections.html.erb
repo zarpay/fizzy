@@ -31,7 +31,7 @@
                 role: "checkbox", aria: { checked: filter.collections.include?(collection) } do %>
             <button type="button" class="btn popup__btn" data-action="dialog#close multi-selection-combobox#change filter-settings#change filter-settings#submitToGenericCardsView:stop">
               <span class="overflow-ellipsis flex-item-grow"><%= collection.name %></span>
-              <%= icon_tag "check", class: "checked flex-item-justify-end", "aria-hidden": true %>
+              <%= icon_tag "check", class: "checked flex-item-justify-end" %>
             </button>
           <% end %>
         <% end %>

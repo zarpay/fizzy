@@ -24,7 +24,7 @@
           <%= tag.li class: "popup__item", data: { navigable_list_target: "item", combobox_target: "item", combobox_value: index, combobox_label: index.humanize }, role: "checkbox", aria: { checked: filter.indexed_by == index } do %>
             <button type="button" class="btn popup__btn" data-action="dialog#close combobox#change filter-settings#change form#submit">
               <span class="overflow-ellipsis flex-item-grow"><%= index == "all" ? "Status" : index.humanize %></span>
-              <%= icon_tag "check", class: "checked flex-item-justify-end", "aria-hidden": true %>
+              <%= icon_tag "check", class: "checked flex-item-justify-end" %>
             </button>
           <% end %>
         <% end %>

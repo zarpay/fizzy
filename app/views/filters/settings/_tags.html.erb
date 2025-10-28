@@ -30,7 +30,7 @@
                 role: "checkbox", aria: { checked: filter.tags.include?(tag) }) do %>
             <button type="button" class="btn popup__btn" data-action="dialog#close multi-selection-combobox#change filter-settings#change form#submit">
               <span class="overflow-ellipsis flex-item-grow"><%= tag.hashtag %></span>
-              <%= icon_tag "check", class: "checked flex-item-justify-end", "aria-hidden": true %>
+              <%= icon_tag "check", class: "checked flex-item-justify-end" %>
             </button>
           <% end %>
         <% end %>
