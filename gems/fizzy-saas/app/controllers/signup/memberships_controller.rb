@@ -1,6 +1,8 @@
 class Signup::MembershipsController < ApplicationController
   layout "public"
 
+  disallow_account_scope
+
   def new
     @signup = Signup.new
   end

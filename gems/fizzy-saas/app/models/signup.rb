@@ -108,8 +108,21 @@ class Signup
           membership_id: membership.id
         }
       )
+      # TODO:PLANB: we'll need to filter by account
       @user = User.find_by!(role: :admin)
-      @account.setup_customer_template
+
+      # TODO:PLANB: remove this once board and other models have an account_id.
+      #             this is needed because code will try to reference Account#entropy, previously
+      #             that code used Account.sole.
+      old_account, Current.account = Current.account, @account
+      # TODO:PLANB: I'm not sure how to get around needing Current.user here (which requires Current.membership)
+      old_membership, Current.membership = Current.membership, @membership
+      begin
+        @account.setup_customer_template
+      ensure
+        Current.membership = old_membership
+        Current.account = old_account
+      end
     end
 
     def destroy_tenant

@@ -1,6 +1,8 @@
 class Signup::CompletionsController < ApplicationController
   layout "public"
 
+  disallow_account_scope
+
   def new
     @signup = Signup.new(signup_params)
   end
