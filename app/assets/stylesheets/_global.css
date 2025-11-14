@@ -209,14 +209,6 @@
   /* Colors: Cards */
   --color-card-default: oklch(var(--lch-blue-dark));
   --color-card-complete: var(--color-ink-darker);
-  --color-card-1: oklch(var(--lch-ink-medium));
-  --color-card-2: oklch(var(--lch-uncolor-medium));
-  --color-card-3: oklch(var(--lch-yellow-medium));
-  --color-card-4: oklch(var(--lch-lime-medium));
-  --color-card-5: oklch(var(--lch-aqua-medium));
-  --color-card-6: oklch(var(--lch-violet-medium));
-  --color-card-7: oklch(var(--lch-purple-medium));
-  --color-card-8: oklch(var(--lch-pink-medium));
 
   /* Colors: Syntax highlighting */
   --color-code-token__att: oklch(var(--lch-blue-dark));
