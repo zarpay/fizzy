@@ -18,7 +18,9 @@ module Filter::Fields
     def indexed_by_human_name(index)
       case index
       when "postponing_soon"
-        "Auto-closing soon"
+        "Closing soon"
+      when "closed"
+        "Done"
       when "all"
         "Open"
       else
