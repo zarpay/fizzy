@@ -7,8 +7,10 @@ class Users::AvatarsController < ApplicationController
   before_action :ensure_permission_to_administer_user, only: :destroy
 
   def show
-    if stale? @user, cache_control: cache_control
-      render_avatar_or_initials
+    if @user.avatar.attached?
+      redirect_to rails_blob_url(@user.avatar.variant(:thumb), disposition: "inline")
+    elsif stale? @user, cache_control: cache_control
+      render_initials
     end
   end
 
@@ -31,14 +33,6 @@ class Users::AvatarsController < ApplicationController
         {}
       else
         { max_age: 30.minutes, stale_while_revalidate: 1.week }
-      end
-    end
-
-    def render_avatar_or_initials
-      if @user.avatar.attached?
-        send_blob_stream @user.avatar
-      else
-        render_initials
       end
     end
 
