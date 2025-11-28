@@ -137,12 +137,14 @@ Key recurring tasks (via `config/recurring.yml`):
 - Search records denormalized for performance
 - Models in `app/models/search/`
 
+## Tools
+
 ### Chrome MCP (Local Dev)
 
 URL: `http://fizzy.localhost:3006`
 Login: david@37signals.com (passwordless magic link auth - check rails console for link)
 
-Use Chrome MCP tools to interact with the running dev app for UI testing and debugging.
+Use Chrome MCP tools to interact with the running dev app for UI testing and debugging.``
 
 ## Coding style
 
