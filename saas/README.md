@@ -1,28 +1,47 @@
-# Fizzy::Saas
-Short description and motivation.
+This is a Rails engine that [37signals](https://37signals.com/) bundles with [Fizzy](https://github.com/basecamp/fizzy) to offer the SaaS service at https://fizzy.do.
 
-## Usage
-How to use my plugin.
+## Working locally in SaaS mode
 
-## Installation
-Add this line to your application's Gemfile:
+To make Fizzy run in SaaS mode, run this in the terminal:
 
 ```ruby
-gem "fizzy-saas"
+bin/rails saas:enable
 ```
 
-And then execute:
-```bash
-$ bundle
+To can go back to open source mode:
+
+```ruby
+bin/rails saas:disable
 ```
 
-Or install it yourself as:
-```bash
-$ gem install fizzy-saas
-```
+Then you can work do [Fizzy development as usual](https://github.com/basecamp/fizzy).
 
-## Contributing
-Contribution directions go here.
+## Environments
 
-## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Fizzy is deployed with Kamal. You'll need to have the 1Password CLI set up in order to access the secrets that are used when deploying. Provided you have that, it should be as simple as `bin/kamal deploy` to the correct environment.
+
+### Beta
+
+Beta is primarily intended for testing product features.
+
+Beta tenant is:
+
+- https://fizzy-beta.37signals.com
+
+This environment uses local disk for Active Storage.
+
+
+### Staging
+
+Staging is primarily intended for testing infrastructure changes.
+
+- https://fizzy.37signals-staging.com/
+
+This environment uses a FlashBlade bucket for blob storage, and shares nothing with Production. We may periodically copy data here from production.
+
+
+### Production
+
+- https://app.fizzy.do/
+
+This environment uses a FlashBlade bucket for blob storage.
