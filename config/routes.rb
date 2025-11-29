@@ -159,7 +159,7 @@ Rails.application.routes.draw do
 
   resource :signup, only: %i[ new create ] do
     collection do
-      scope module: :signup, as: :signup do
+      scope module: :signups, as: :signup do
         resource :completion, only: %i[ new create ]
       end
     end

@@ -1,13 +1,4 @@
 class SessionsController < ApplicationController
-  # FIXME: Remove this before launch!
-  unless Rails.env.local?
-    http_basic_authenticate_with \
-      name: Rails.application.credentials.account_signup_http_basic_auth.name,
-      password: Rails.application.credentials.account_signup_http_basic_auth.password,
-      realm: "Fizzy Signup",
-      only: :create, unless: -> { Identity.exists?(email_address: email_address) }
-  end
-
   disallow_account_scope
   require_unauthenticated_access except: :destroy
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_path, alert: "Try again later." }
