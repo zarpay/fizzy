@@ -6,6 +6,6 @@ module Account::StorageTracking
   end
 
   def adjust_storage_later(delta)
-    Account::AdjustStorageJob.perform_later(self, delta)
+    Account::AdjustStorageJob.perform_later(self, delta) unless delta.zero?
   end
 end
