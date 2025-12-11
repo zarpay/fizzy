@@ -22,6 +22,18 @@
   <%= hidden_field_tag "board_ids[]", @board.id %>
 <% end %>
 
+<%= render "boards/show/mobile_columns", page: @page, board: @board %>
+
+<details class="mobile-column-select position-relative margin-inline">
+  <summary class="btn input input--select">
+    Jump to column…
+  </summary>
+  <div class="popup panel">
+    <%= render "boards/show/mobile_columns", page: @page, board: @board %>
+
+  </div>
+</details>
+
 <%= turbo_frame_tag :cards_container do %>
   <% if @filter.used?(ignore_boards: true) %>
     <%= render "boards/show/filtered_cards", page: @page %>
