@@ -38,6 +38,7 @@ ActiveRecord::Schema[8.2].define(version: 2025_12_24_092315) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.string "status", limit: 255, default: "pending", null: false
+    t.string "type"
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["account_id"], name: "index_account_exports_on_account_id"
@@ -47,6 +48,17 @@ ActiveRecord::Schema[8.2].define(version: 2025_12_24_092315) do
   create_table "account_external_id_sequences", id: :uuid, force: :cascade do |t|
     t.bigint "value", default: 0, null: false
     t.index ["value"], name: "index_account_external_id_sequences_on_value", unique: true
+  end
+
+  create_table "account_imports", id: :uuid, force: :cascade do |t|
+    t.uuid "account_id"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.uuid "identity_id", null: false
+    t.string "status", limit: 255, default: "pending", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_imports_on_account_id"
+    t.index ["identity_id"], name: "index_account_imports_on_identity_id"
   end
 
   create_table "account_join_codes", id: :uuid, force: :cascade do |t|
