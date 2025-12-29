@@ -9,6 +9,10 @@ module Fizzy
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
+    # Add tools
+    config.autoload_paths << Rails.root.join("app/mcp")
+    config.eager_load_paths << Rails.root.join("app/mcp")
+
     # Include the `lib` directory in autoload paths. Use the `ignore:` option
     # to list subdirectories that don't contain `.rb` files or that shouldn't
     # be reloaded or eager loaded.

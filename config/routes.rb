@@ -240,4 +240,11 @@ Rails.application.routes.draw do
   namespace :admin do
     mount MissionControl::Jobs::Engine, at: "/jobs"
   end
+
+  post "mcp", to: "application_mcp#create", as: :mcp
+  get  "mcp", to: "application_mcp#reject_sse"
+
+  # Scope mcp access
+  # post "mcp/:account_id" => "mcp#create"
+  # post "mcp/:account_id/:board_id => "mcp#create"
 end
