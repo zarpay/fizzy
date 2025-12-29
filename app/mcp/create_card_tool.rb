@@ -15,17 +15,20 @@ class CreateCardTool < ApplicationTool
     }
   end
 
-  def call
-    # card = Current.user.accessible_cards.find_by(number: arguments["card_number"])
-    #
-    # case
-    # when card.nil?
-    #   error "Card not found: ##{arguments["card_number"]}")
-    # when card.closed?
-    #   error "Card ##{card.number} is already closed")
-    # end
-    #
-    # card.close(user: Current.user)
-    # success "Closed card ##{card.number}: #{card.title}"
+  def call(args)
+    Current.user = User.last
+    board = Board.find(args["board_id"])
+    card = board.cards.create!(
+      title: args["title"],
+      description: args["description"]
+    )
+
+    card.publish
+
+    {
+      id: card.id,
+      title: card.title,
+      url: Rails.application.routes.url_helpers.card_url(card, host: "fizzy.localhost")
+    }
   end
 end

@@ -26,7 +26,7 @@ class ActionMcp::BaseController < ActionController::Base
 
   private
     def rpc_params
-      @rpc_params ||= (params[:params] || {}).deep_symbolize_keys
+      @rpc_params ||= params[:params] || {}
     end
 
     def dispatch_rpc_method
@@ -57,7 +57,8 @@ class ActionMcp::BaseController < ActionController::Base
     end
 
     def tool_classes
-      ApplicationTool.descendants
+      # ApplicationTool.descendants
+      [ CreateCardTool ]
     end
 
     def tool_list
@@ -65,6 +66,7 @@ class ActionMcp::BaseController < ActionController::Base
     end
 
     def tool_call(tool_name, tool_arguments)
+      "#{tool_name}_tool".camelize.safe_constantize.new.call(tool_arguments)
     end
 
     def rpc_success(result:)
