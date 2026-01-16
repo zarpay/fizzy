@@ -21,11 +21,16 @@
       display: var(--popup-display);
     }
 
+    /* The .pop-up--align-<drection> classes are used for initial alignment.
+     * The orient JS helper layers on the .orient-<direction> to avoid running
+     * off the edge of the screen and will override .popup--align */
+    &:where(.popup--align-left),
     &.orient-left {
       inset-inline: auto 0;
       transform: translateX(0);
     }
 
+    &:where(.popup--align-right),
     &.orient-right {
       inset-inline: 0 auto;
       transform: translateX(0);

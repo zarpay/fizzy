@@ -83,7 +83,7 @@
     }
 
     dialog {
-      inset: 100% auto auto 0;
+      inset-block-start: 100%;
     }
   }
 
