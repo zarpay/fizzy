@@ -20,18 +20,16 @@ class Export < ApplicationRecord
   def build
     processing!
 
-    Current.set(account: account) do
-      with_url_options do
-        zipfile = generate_zip { |zip| populate_zip(zip) }
+    with_account_context do
+      zipfile = generate_zip { |zip| populate_zip(zip) }
 
-        file.attach io: File.open(zipfile.path), filename: "fizzy-export-#{id}.zip", content_type: "application/zip"
-        mark_completed
+      file.attach io: File.open(zipfile.path), filename: "fizzy-export-#{id}.zip", content_type: "application/zip"
+      mark_completed
 
-        ExportMailer.completed(self).deliver_later
-      ensure
-        zipfile&.close
-        zipfile&.unlink
-      end
+      ExportMailer.completed(self).deliver_later
+    ensure
+      zipfile&.close
+      zipfile&.unlink
     end
   rescue => e
     update!(status: :failed)
@@ -47,8 +45,10 @@ class Export < ApplicationRecord
   end
 
   private
-    def with_url_options
-      ActiveStorage::Current.set(url_options: { host: "localhost" }) { yield }
+    def with_account_context
+      Current.set(account: account) do
+        yield
+      end
     end
 
     def populate_zip(zip)

@@ -1,0 +1,47 @@
+class Account::DataTransfer::WatchRecordSet < Account::DataTransfer::RecordSet
+  ATTRIBUTES = %w[
+    account_id
+    card_id
+    created_at
+    id
+    updated_at
+    user_id
+    watching
+  ].freeze
+
+  private
+    def records
+      Watch.where(account: account)
+    end
+
+    def export_record(watch)
+      zip.add_file "data/watches/#{watch.id}.json", watch.as_json.to_json
+    end
+
+    def files
+      zip.glob("data/watches/*.json")
+    end
+
+    def import_batch(files)
+      batch_data = files.map do |file|
+        data = load(file)
+        data.slice(*ATTRIBUTES).merge("account_id" => account.id)
+      end
+
+      Watch.insert_all!(batch_data)
+    end
+
+    def validate_record(file_path)
+      data = load(file_path)
+      expected_id = File.basename(file_path, ".json")
+
+      unless data["id"].to_s == expected_id
+        raise IntegrityError, "Watch record ID mismatch: expected #{expected_id}, got #{data['id']}"
+      end
+
+      missing = ATTRIBUTES - data.keys
+      unless missing.empty?
+        raise IntegrityError, "#{file_path} is missing required fields: #{missing.join(', ')}"
+      end
+    end
+end
