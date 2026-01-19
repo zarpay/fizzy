@@ -3,10 +3,12 @@ class Account::DataTransfer::RecordSet
 
   IMPORT_BATCH_SIZE = 100
 
-  attr_reader :account
+  attr_reader :account, :model, :attributes
 
-  def initialize(account)
+  def initialize(account:, model:, attributes: nil)
     @account = account
+    @model = model
+    @attributes = (attributes || model.column_names).map(&:to_s)
   end
 
   def export(to:, start: nil)
@@ -49,28 +51,51 @@ class Account::DataTransfer::RecordSet
     end
 
     def records
-      []
+      model.where(account_id: account.id)
     end
 
     def export_record(record)
-      raise NotImplementedError
+      zip.add_file "data/#{model_dir}/#{record.id}.json", record.to_json
     end
 
     def files
-      []
+      zip.glob("data/#{model_dir}/*.json")
     end
 
     def import_batch(files)
-      raise NotImplementedError
+      batch_data = files.map do |file|
+        data = load(file)
+        data.slice(*attributes).merge("account_id" => account.id)
+      end
+
+      model.insert_all!(batch_data)
     end
 
     def validate_record(file_path)
-      raise NotImplementedError
+      data = load(file_path)
+      expected_id = File.basename(file_path, ".json")
+
+      unless data["id"].to_s == expected_id
+        raise IntegrityError, "#{model} record ID mismatch: expected #{expected_id}, got #{data['id']}"
+      end
+
+      missing = attributes - data.keys
+      if missing.any?
+        raise IntegrityError, "#{file_path} is missing required fields: #{missing.join(', ')}"
+      end
+
+      if model.exists?(id: data["id"])
+        raise IntegrityError, "#{model} record with ID #{data['id']} already exists"
+      end
     end
 
     def load(file_path)
       JSON.parse(zip.read(file_path))
     rescue ArgumentError => e
       raise IntegrityError, e.message
+    end
+
+    def model_dir
+      model.table_name
     end
 end

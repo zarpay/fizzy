@@ -10,6 +10,10 @@ class Account::DataTransfer::UserRecordSet < Account::DataTransfer::RecordSet
     updated_at
   ]
 
+  def initialize(account)
+    super(account: account, model: User)
+  end
+
   private
     def records
       User.where(account: account)

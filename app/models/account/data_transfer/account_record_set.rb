@@ -10,6 +10,10 @@ class Account::DataTransfer::AccountRecordSet < Account::DataTransfer::RecordSet
     usage_limit
   ]
 
+  def initialize(account)
+    super(account: account, model: Account)
+  end
+
   private
     def records
       [ account ]

@@ -10,6 +10,10 @@ class Account::DataTransfer::ActionTextRichTextRecordSet < Account::DataTransfer
     updated_at
   ].freeze
 
+  def initialize(account)
+    super(account: account, model: ActionText::RichText)
+  end
+
   private
     def records
       ActionText::RichText.where(account: account)

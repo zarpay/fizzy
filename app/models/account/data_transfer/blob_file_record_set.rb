@@ -1,4 +1,8 @@
 class Account::DataTransfer::BlobFileRecordSet < Account::DataTransfer::RecordSet
+  def initialize(account)
+    super(account: account, model: ActiveStorage::Blob)
+  end
+
   private
     def records
       ActiveStorage::Blob.where(account: account)
