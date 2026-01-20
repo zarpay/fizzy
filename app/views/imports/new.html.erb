@@ -9,7 +9,6 @@
   </header>
 
   <%= form_with url: imports_path, class: "flex flex-column gap", data: { controller: "form upload-preview" }, multipart: true do |form| %>
-
     <label class="btn input--upload">
       <div data-upload-preview-target="placeholder">Choose a file…</div>
       <div data-upload-preview-target="fileName" hidden></div>
