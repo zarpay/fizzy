@@ -78,9 +78,7 @@ export class Service extends Construct {
         zoneName: config.hostedZoneName,
         recordName: config.fqdn,
         // TODO: Remove after DNS propagation - will become primary domain
-        additionalDomains: [
-          { zoneName: 'zarhq.dev', recordName: 'fizzy.zarhq.dev' },
-        ],
+        additionalDomains: [{ zoneName: 'zarhq.dev', recordName: 'fizzy.zarhq.dev' }],
       },
     });
 
