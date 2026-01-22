@@ -2,9 +2,11 @@ name: CI
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    branches:
+      - main
     paths-ignore:
       - 'infra/**'
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
@@ -12,8 +14,73 @@ permissions:
 jobs:
   checks:
     name: Checks
-    uses: ./.github/workflows/ci-checks.yml
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Check for lockfile drift
+        run: bin/bundle-drift check
+
+      - name: Gem audit
+        run: bin/bundler-audit check --update
+
+      - name: Importmap audit
+        run: bin/importmap audit
+
+      - name: Brakeman audit
+        run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
+      - name: Lint
+        run: bin/rubocop
 
   test:
-    name: Test
-    uses: ./.github/workflows/test.yml
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: fizzy_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    env:
+      RAILS_ENV: test
+      DATABASE_ADAPTER: mysql
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      FIZZY_DB_HOST: 127.0.0.1
+      FIZZY_DB_PORT: 3306
+
+    steps:
+      - name: Install system packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libvips curl ffmpeg
+
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run tests
+        run: bin/rails db:setup test
+
+      - name: Run system tests
+        run: bin/rails test:system
