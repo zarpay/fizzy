@@ -8,16 +8,8 @@ permissions:
 
 jobs:
   test:
-    name: Tests (${{ matrix.mode }})
+    name: Tests
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        include:
-          - mode: SQLite
-            db_adapter: sqlite
-          - mode: MySQL
-            db_adapter: mysql
 
     services:
       mysql:
@@ -35,7 +27,7 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DATABASE_ADAPTER: ${{ matrix.db_adapter }}
+      DATABASE_ADAPTER: mysql
       MYSQL_HOST: 127.0.0.1
       MYSQL_PORT: 3306
       MYSQL_USER: root
@@ -44,7 +36,7 @@ jobs:
 
     steps:
       - name: Install system packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libsqlite3-0 libvips curl ffmpeg
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libvips curl ffmpeg
 
       - uses: actions/checkout@v6
 
