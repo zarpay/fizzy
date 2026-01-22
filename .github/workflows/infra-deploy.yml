@@ -70,7 +70,9 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: CDK Diff
-        run: yarn cdk diff --context imageVersion=${{ inputs.imageVersion }} 2>&1 | tee cdk.diff
+        run: |
+          set -euo pipefail
+          yarn cdk diff --context imageVersion=${{ inputs.imageVersion }} 2>&1 | tee cdk.diff
 
       # TODO: Enable CDK Deploy when ready
       # - name: CDK Deploy
