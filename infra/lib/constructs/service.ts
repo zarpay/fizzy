@@ -3,7 +3,7 @@ import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
-import { SharedAlbEcsFargateService } from '@zarpay/zar-cdk-lib';
+import { EcrContainerImage, SharedAlbEcsFargateService } from '@zarpay/zar-cdk-lib';
 import { config } from '../../environments/config-loader.js';
 import { appName, environment, isProduction, smtp } from '../shared/global-variables.js';
 import { Database } from './database.js';
@@ -36,12 +36,15 @@ export class Service extends Construct {
       '/platform/smtp/credentials',
     );
 
+    const { image } = EcrContainerImage.fromContext(this, 'FizzyImage', {
+      repositoryName: 'fizzy',
+    });
+
     const service = new SharedAlbEcsFargateService(this, 'Service', {
       appName,
       deployEnvironment: environment,
       vpc: props.vpc,
-      // Use upstream Fizzy image for now
-      image: ecs.ContainerImage.fromRegistry('ghcr.io/basecamp/fizzy:main'),
+      image,
       validateProductionImageVersion: false,
       autoScaling: {
         minCapacity: config.service.minCapacity,
@@ -71,7 +74,12 @@ export class Service extends Construct {
         SMTP_PASSWORD: ecs.Secret.fromSecretsManager(smtpCredentials, 'password'),
       },
       targetGroupHealthCheck: { path: '/up' },
-      dns: { zoneName: config.hostedZoneName, recordName: config.fqdn },
+      dns: {
+        zoneName: config.hostedZoneName,
+        recordName: config.fqdn,
+        // TODO: Remove after DNS propagation - will become primary domain
+        additionalDomains: [{ zoneName: 'zarhq.dev', recordName: 'fizzy.zarhq.dev' }],
+      },
     });
 
     // Grant S3 permissions to the ECS task role

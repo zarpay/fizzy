@@ -1,12 +1,18 @@
 name: Infra Deploy
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'infra/**'
+  workflow_call:
+    inputs:
+      imageVersion:
+        description: 'Image version to deploy (e.g., abc1234)'
+        required: true
+        type: string
   workflow_dispatch:
+    inputs:
+      imageVersion:
+        description: 'Image version to deploy (e.g., abc1234)'
+        required: true
+        type: string
 
 concurrency:
   group: infra-deploy
@@ -30,12 +36,15 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     environment: production
+    env:
+      ENVIRONMENT: production
     steps:
       - name: Deployment Info
         run: |
           echo "Starting infrastructure deployment..."
-          echo "Commit SHA:   ${{ github.sha }}"
-          echo "Triggered by: ${{ github.actor }}"
+          echo "Commit SHA:     ${{ github.sha }}"
+          echo "Image Version:  ${{ inputs.imageVersion }}"
+          echo "Triggered by:   ${{ github.actor }}"
         working-directory: .
 
       - name: Checkout
@@ -61,12 +70,8 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: CDK Diff
-        run: yarn cdk diff 2>&1 | tee cdk.diff
-        env:
-          ENVIRONMENT: ${{ vars.CDK_ENV }}
+        run: yarn cdk diff --context imageVersion=${{ inputs.imageVersion }} 2>&1 | tee cdk.diff
 
       # TODO: Enable CDK Deploy when ready
       # - name: CDK Deploy
-      #   run: yarn cdk deploy --require-approval never
-      #   env:
-      #     ENVIRONMENT: ${{ vars.CDK_ENV }}
+      #   run: yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}

@@ -15,6 +15,7 @@ concurrency:
 permissions:
   contents: read
   id-token: write
+  packages: read
 
 env:
   AWS_REGION: me-central-1
@@ -62,3 +63,11 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy Application
+    needs: build
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      imageVersion: ${{ needs.build.outputs.image_tag }}
+    secrets: inherit
