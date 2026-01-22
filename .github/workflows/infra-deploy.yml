@@ -1,0 +1,72 @@
+name: Infra Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+  workflow_dispatch:
+
+concurrency:
+  group: infra-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  packages: read
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  AWS_REGION: me-central-1
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deployment Info
+        run: |
+          echo "Starting infrastructure deployment..."
+          echo "Commit SHA:   ${{ github.sha }}"
+          echo "Triggered by: ${{ github.actor }}"
+        working-directory: .
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: infra/package.json
+          cache: yarn
+          cache-dependency-path: infra/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --production=false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_IAM_ROLE_GITHUB_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: CDK Diff
+        run: yarn cdk diff 2>&1 | tee cdk.diff
+        env:
+          ENVIRONMENT: ${{ vars.CDK_ENV }}
+
+      # TODO: Enable CDK Deploy when ready
+      # - name: CDK Deploy
+      #   run: yarn cdk deploy --require-approval never
+      #   env:
+      #     ENVIRONMENT: ${{ vars.CDK_ENV }}

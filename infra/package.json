@@ -1,0 +1,31 @@
+{
+  "name": "zar-fizzy",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "24.5.0"
+  },
+  "bin": {
+    "zar-fizzy": "bin/zar-fizzy.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "format": "prettier --write \"**/*.{ts,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,json,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "aws-cdk": "2.1033.0",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.3"
+  },
+  "dependencies": {
+    "@zarpay/zar-cdk-lib": "^0.27.0",
+    "aws-cdk-lib": "^2.232.1",
+    "constructs": "^10.4.3",
+    "source-map-support": "^0.5.21"
+  }
+}
