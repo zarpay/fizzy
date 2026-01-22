@@ -74,6 +74,7 @@ jobs:
           set -euo pipefail
           yarn cdk diff --context imageVersion=${{ inputs.imageVersion }} 2>&1 | tee cdk.diff
 
-      # TODO: Enable CDK Deploy when ready
-      # - name: CDK Deploy
-      #   run: yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
+      - name: CDK Deploy
+        run: |
+          set -euo pipefail
+          yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
