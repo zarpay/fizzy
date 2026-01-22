@@ -70,17 +70,17 @@
   resolved "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.4.tgz"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
-"@types/node@*", "@types/node@^24.10.1":
+"@types/node@^24.10.1":
   version "24.10.9"
   resolved "https://registry.npmjs.org/@types/node/-/node-24.10.9.tgz"
   integrity sha512-ne4A0IpG3+2ETuREInjPNhUGis1SFjv1d5asp8MzEAGtOZeTeHVDOYqOgqfhvseqg/iXty2hjBf1zAOb7RNiNw==
   dependencies:
     undici-types "~7.16.0"
 
-"@zarpay/zar-cdk-lib@^0.27.0":
-  version "0.27.0"
-  resolved "https://npm.pkg.github.com/download/@zarpay/zar-cdk-lib/0.27.0/97f470751ab668d058155910ebdef98da1d5f5e8"
-  integrity sha512-ghG2Str/T3JptRp/FhMEgyAShaWr5N1mvwfM0Hchx5yfCu74JJlPjiFStx3L05urGZufAR2lBl8u/svlr5LsdA==
+"@zarpay/zar-cdk-lib@0.28.0":
+  version "0.28.0"
+  resolved "https://npm.pkg.github.com/download/@zarpay/zar-cdk-lib/0.28.0/633aa350129a0df6979464525d62b3426e45fca4#633aa350129a0df6979464525d62b3426e45fca4"
+  integrity sha512-rIEcs5Slj955/TGI1drgLT9/a+QwyE2lYNyEmtAK0+Pw8Fy84zqzOxV+q1WLJJW1z8XtYeckrT6wCVjRNjWSrQ==
 
 acorn-walk@^8.1.1:
   version "8.3.4"
@@ -126,7 +126,7 @@ astral-regex@^2.0.0:
   resolved "https://registry.npmjs.org/astral-regex/-/astral-regex-2.0.0.tgz"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-aws-cdk-lib@^2.231.0, aws-cdk-lib@^2.232.1:
+aws-cdk-lib@^2.232.1:
   version "2.235.1"
   resolved "https://registry.npmjs.org/aws-cdk-lib/-/aws-cdk-lib-2.235.1.tgz"
   integrity sha512-qKAsbunxtveIOIaeJSBgH2PZgdIiPkKtfsa+BxeNDOv2idw6Oa0dJW3Q0sdu8XBopY1KZI2Owrg8r56BOyyohA==
@@ -193,7 +193,7 @@ concat-map@0.0.1:
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-constructs@^10.0.0, constructs@^10.4.3:
+constructs@^10.4.3:
   version "10.4.5"
   resolved "https://registry.npmjs.org/constructs/-/constructs-10.4.5.tgz"
   integrity sha512-fOoP70YLevMZr5avJHx2DU3LNYmC6wM8OwdrNewMZou1kZnPGOeVzBrRjZNgFDHUlulYUjkpFRSpTE3D+n+ZSg==
@@ -320,10 +320,7 @@ require-from-string@^2.0.2:
   resolved "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz"
   integrity sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==
 
-semver@^7.7.2:
-  version "7.7.2"
-
-semver@^7.7.3:
+semver@^7.7.2, semver@^7.7.3:
   version "7.7.3"
   resolved "https://registry.npmjs.org/semver/-/semver-7.7.3.tgz"
   integrity sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==
@@ -396,7 +393,7 @@ ts-node@^10.9.2:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-typescript@>=2.7, typescript@~5.9.3:
+typescript@~5.9.3:
   version "5.9.3"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz"
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
