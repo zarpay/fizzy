@@ -4,8 +4,8 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
-import { config } from '../../environments/config-loader.js';
-import { environment, isProduction } from '../shared/global-variables.js';
+import { config } from '../../environments/config-loader';
+import { environment, isProduction } from '../shared/global-variables';
 
 export interface DatabaseProps {
   vpc: ec2.IVpc;

@@ -1,10 +1,10 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { awsOrganizationAccounts, EcrRepository, Platform } from '@zarpay/zar-cdk-lib';
 import { Construct } from 'constructs';
-import { Database } from './constructs/database.js';
-import { Service } from './constructs/service.js';
-import { Storage } from './constructs/storage.js';
-import { isProduction, vpcName } from './shared/global-variables.js';
+import { Database } from './constructs/database';
+import { Service } from './constructs/service';
+import { Storage } from './constructs/storage';
+import { isProduction, vpcName } from './shared/global-variables';
 
 export class FizzyStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: cdk.StackProps) {

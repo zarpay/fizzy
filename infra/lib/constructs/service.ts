@@ -4,10 +4,10 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { EcrContainerImage, SharedAlbEcsFargateService } from '@zarpay/zar-cdk-lib';
-import { config } from '../../environments/config-loader.js';
-import { appName, environment, isProduction, smtp } from '../shared/global-variables.js';
-import { Database } from './database.js';
-import { Storage } from './storage.js';
+import { config } from '../../environments/config-loader';
+import { appName, environment, isProduction, smtp } from '../shared/global-variables';
+import { Database } from './database';
+import { Storage } from './storage';
 
 interface ServiceProps {
   vpc: ec2.IVpc;

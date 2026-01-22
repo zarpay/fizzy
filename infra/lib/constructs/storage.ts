@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { isProduction, region } from '../shared/global-variables.js';
+import { isProduction, region } from '../shared/global-variables';
 
 export class Storage extends Construct {
   public readonly bucket: s3.Bucket;
