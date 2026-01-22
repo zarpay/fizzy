@@ -34,9 +34,9 @@ defaults:
 
 jobs:
   deploy:
-    name: Deploy to ${{ env.ENVIRONMENT }}
+    name: Deploy to Production
     runs-on: ubuntu-latest
-    environment: ${{ env.ENVIRONMENT }}
+    environment: production
     steps:
       - name: Deployment Info
         run: |
