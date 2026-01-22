@@ -1,0 +1,65 @@
+name: Infra CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+      - '.github/workflows/infra-*.yml'
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: infra/.nvmrc
+          cache: npm
+          cache-dependency-path: infra/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run format:check
+
+      - name: Build
+        run: npm run build
+
+  synth:
+    name: Synthesize CDK Stack
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: infra/.nvmrc
+          cache: npm
+          cache-dependency-path: infra/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Synthesize CDK Stack
+        run: npx cdk synth
+        env:
+          CDK_DEFAULT_ACCOUNT: '000000000000'
+          ENVIRONMENT: production

@@ -1,0 +1,7 @@
+{
+  "hostedZoneName": "production.zarhq.dev",
+  "fqdn": "fizzy.production.zarhq.dev",
+  "database": {
+    "minCapacity": 0.5
+  }
+}

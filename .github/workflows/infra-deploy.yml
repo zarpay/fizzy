@@ -1,0 +1,70 @@
+name: Infra Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+  workflow_dispatch:
+
+concurrency:
+  group: infra-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: me-central-1
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deployment Info
+        run: |
+          echo "Starting infrastructure deployment..."
+          echo "Commit SHA:   ${{ github.sha }}"
+          echo "Triggered by: ${{ github.actor }}"
+        working-directory: .
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: infra/.nvmrc
+          cache: npm
+          cache-dependency-path: infra/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_IAM_ROLE_GITHUB_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: CDK Diff
+        run: npx cdk diff 2>&1 | tee cdk.diff
+        env:
+          ENVIRONMENT: ${{ vars.CDK_ENV }}
+
+      # TODO: Enable CDK Deploy when ready
+      # - name: CDK Deploy
+      #   run: npx cdk deploy --require-approval never
+      #   env:
+      #     ENVIRONMENT: ${{ vars.CDK_ENV }}

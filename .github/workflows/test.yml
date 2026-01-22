@@ -2,13 +2,6 @@ name: Test
 
 on:
   workflow_call:
-    inputs:
-      saas:
-        type: boolean
-        required: true
-    secrets:
-      FIZZY_GH_TOKEN:
-        required: false
 
 permissions:
   contents: read
@@ -43,14 +36,11 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_ADAPTER: ${{ matrix.db_adapter }}
-      ${{ inputs.saas && 'SAAS' || 'SAAS_DISABLED' }}: ${{ inputs.saas && '1' || '' }}
-      BUNDLE_GEMFILE: ${{ inputs.saas && 'Gemfile.saas' || 'Gemfile' }}
       MYSQL_HOST: 127.0.0.1
       MYSQL_PORT: 3306
       MYSQL_USER: root
       FIZZY_DB_HOST: 127.0.0.1
       FIZZY_DB_PORT: 3306
-      BUNDLE_GITHUB__COM: ${{ inputs.saas && format('x-access-token:{0}', secrets.FIZZY_GH_TOKEN) || '' }}
 
     steps:
       - name: Install system packages
