@@ -26,6 +26,7 @@ permissions:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   AWS_REGION: me-central-1
+  ENVIRONMENT: production
 
 defaults:
   run:
@@ -33,11 +34,9 @@ defaults:
 
 jobs:
   deploy:
-    name: Deploy to Production
+    name: Deploy to ${{ env.ENVIRONMENT }}
     runs-on: ubuntu-latest
-    environment: production
-    env:
-      ENVIRONMENT: production
+    environment: ${{ env.ENVIRONMENT }}
     steps:
       - name: Deployment Info
         run: |
@@ -78,3 +77,17 @@ jobs:
         run: |
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
+
+      - name: Slack Notification
+        if: ${{ always() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_TITLE: 'Fizzy CDK Deployment'
+          SLACK_MESSAGE: |
+            *Environment:* `${{ env.ENVIRONMENT }}`
+
+            *Image Version:* `${{ inputs.imageVersion }}`
+
+            *Commit Message:* ${{ github.event.head_commit.message }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
