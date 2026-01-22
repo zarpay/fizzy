@@ -26,6 +26,7 @@ permissions:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   AWS_REGION: me-central-1
+  ENVIRONMENT: production
 
 defaults:
   run:
@@ -33,11 +34,9 @@ defaults:
 
 jobs:
   deploy:
-    name: Deploy to Production
+    name: Deploy to ${{ env.ENVIRONMENT }}
     runs-on: ubuntu-latest
-    environment: production
-    env:
-      ENVIRONMENT: production
+    environment: ${{ env.ENVIRONMENT }}
     steps:
       - name: Deployment Info
         run: |
@@ -86,7 +85,7 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_TITLE: 'Fizzy CDK Deployment'
           SLACK_MESSAGE: |
-            *Environment:* `production`
+            *Environment:* `${{ env.ENVIRONMENT }}`
 
             *Image Version:* `${{ inputs.imageVersion }}`
 
