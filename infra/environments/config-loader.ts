@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { environment } from '../lib/shared/global-variables.js';
+import { environment } from '../lib/shared/global-variables';
 
 function deepMerge(target: any, source: any): any {
   if (typeof target !== 'object' || typeof source !== 'object') {
