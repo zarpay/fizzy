@@ -44,12 +44,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: infra/.nvmrc
-          cache: npm
-          cache-dependency-path: infra/package-lock.json
+          node-version-file: infra/package.json
+          cache: yarn
+          cache-dependency-path: infra/yarn.lock
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn --frozen-lockfile --production=false
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -61,12 +61,12 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: CDK Diff
-        run: npx cdk diff 2>&1 | tee cdk.diff
+        run: yarn cdk diff 2>&1 | tee cdk.diff
         env:
           ENVIRONMENT: ${{ vars.CDK_ENV }}
 
       # TODO: Enable CDK Deploy when ready
       # - name: CDK Deploy
-      #   run: npx cdk deploy --require-approval never
+      #   run: yarn cdk deploy --require-approval never
       #   env:
       #     ENVIRONMENT: ${{ vars.CDK_ENV }}
