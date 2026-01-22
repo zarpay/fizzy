@@ -15,8 +15,10 @@ concurrency:
 permissions:
   contents: read
   id-token: write
+  packages: read
 
 env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   AWS_REGION: me-central-1
 
 defaults:
