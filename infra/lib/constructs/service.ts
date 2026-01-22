@@ -74,7 +74,14 @@ export class Service extends Construct {
         SMTP_PASSWORD: ecs.Secret.fromSecretsManager(smtpCredentials, 'password'),
       },
       targetGroupHealthCheck: { path: '/up' },
-      dns: { zoneName: config.hostedZoneName, recordName: config.fqdn },
+      dns: {
+        zoneName: config.hostedZoneName,
+        recordName: config.fqdn,
+        // TODO: Remove after DNS propagation - will become primary domain
+        additionalDomains: [
+          { zoneName: 'zarhq.dev', recordName: 'fizzy.zarhq.dev' },
+        ],
+      },
     });
 
     // Grant S3 permissions to the ECS task role

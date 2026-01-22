@@ -77,7 +77,7 @@
   dependencies:
     undici-types "~7.16.0"
 
-"@zarpay/zar-cdk-lib@0.28.0":
+"@zarpay/zar-cdk-lib@^0.28.0":
   version "0.28.0"
   resolved "https://npm.pkg.github.com/download/@zarpay/zar-cdk-lib/0.28.0/633aa350129a0df6979464525d62b3426e45fca4#633aa350129a0df6979464525d62b3426e45fca4"
   integrity sha512-rIEcs5Slj955/TGI1drgLT9/a+QwyE2lYNyEmtAK0+Pw8Fy84zqzOxV+q1WLJJW1z8XtYeckrT6wCVjRNjWSrQ==
