@@ -78,3 +78,17 @@ jobs:
         run: |
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
+
+      - name: Slack Notification
+        if: ${{ always() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_TITLE: 'Fizzy CDK Deployment'
+          SLACK_MESSAGE: |
+            *Environment:* `production`
+
+            *Image Version:* `${{ inputs.imageVersion }}`
+
+            *Commit Message:* ${{ github.event.head_commit.message }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
