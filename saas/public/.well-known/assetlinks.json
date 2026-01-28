@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "do.fizzy.app",
+      "sha256_cert_fingerprints":
+        ["3B:17:E4:FF:F0:2E:E0:CE:D7:94:F9:9E:71:3C:A8:14:7C:FA:B7:F2:99:35:98:03:E9:E0:EB:B3:6E:12:E2:0F"]
+    }
+  }
+]
