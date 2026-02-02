@@ -95,6 +95,31 @@ class Account::DataTransfer::RecordSet
       if model.exists?(id: data["id"])
         raise IntegrityError, "#{model} record with ID #{data['id']} already exists"
       end
+
+      check_associations_dont_exist(data)
+    end
+
+    def check_associations_dont_exist(data)
+      model.reflect_on_all_associations(:belongs_to).each do |association|
+        foreign_key = association.foreign_key.to_s
+
+        if associated_id = data[foreign_key]
+          check_association_doesnt_exist(data, association, associated_id)
+        end
+      end
+    end
+
+    def check_association_doesnt_exist(data, association, associated_id)
+      if association.polymorphic?
+        type_column = association.foreign_type.to_s
+        associated_class = data[type_column].constantize
+      else
+        associated_class = association.klass
+      end
+
+      if associated_class.exists?(id: associated_id)
+        raise IntegrityError, "#{model} record references existing #{association.name} (#{associated_class}) with ID #{associated_id}"
+      end
     end
 
     def skip_to(file_list, last_id)
