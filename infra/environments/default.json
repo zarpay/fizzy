@@ -1,0 +1,10 @@
+{
+  "service": {
+    "minCapacity": 1,
+    "maxCapacity": 2
+  },
+  "database": {
+    "minCapacity": 0,
+    "maxCapacity": 2
+  }
+}

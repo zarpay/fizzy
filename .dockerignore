@@ -3,6 +3,10 @@
 # Ignore git directory.
 /.git/
 
+# Ignore CI/CD and infrastructure
+/.github/
+/infra/
+
 # Ignore bundler config.
 /.bundle
 

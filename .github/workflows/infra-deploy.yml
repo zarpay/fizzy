@@ -1,0 +1,93 @@
+name: Infra Deploy
+
+on:
+  workflow_call:
+    inputs:
+      imageVersion:
+        description: 'Image version to deploy (e.g., abc1234)'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      imageVersion:
+        description: 'Image version to deploy (e.g., abc1234)'
+        required: true
+        type: string
+
+concurrency:
+  group: infra-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  packages: read
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  AWS_REGION: me-central-1
+  ENVIRONMENT: production
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deployment Info
+        run: |
+          echo "Starting infrastructure deployment..."
+          echo "Commit SHA:     ${{ github.sha }}"
+          echo "Image Version:  ${{ inputs.imageVersion }}"
+          echo "Triggered by:   ${{ github.actor }}"
+        working-directory: .
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: infra/package.json
+          cache: yarn
+          cache-dependency-path: infra/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --production=false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_IAM_ROLE_GITHUB_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: CDK Diff
+        run: |
+          set -euo pipefail
+          yarn cdk diff --context imageVersion=${{ inputs.imageVersion }} 2>&1 | tee cdk.diff
+
+      - name: CDK Deploy
+        run: |
+          set -euo pipefail
+          yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
+
+      - name: Slack Notification
+        if: ${{ always() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_TITLE: 'Fizzy CDK Deployment'
+          SLACK_MESSAGE: |
+            *Environment:* `${{ env.ENVIRONMENT }}`
+
+            *Image Version:* `${{ inputs.imageVersion }}`
+
+            *Commit Message:* ${{ github.event.head_commit.message }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
