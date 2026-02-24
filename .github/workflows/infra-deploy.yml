@@ -83,6 +83,7 @@ jobs:
         uses: mattermost/action-mattermost-notify@master
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
+          MATTERMOST_CHANNEL: devops-alerts
           TEXT: |
             ##### Fizzy CDK Deployment — ${{ job.status }}
             | | |
