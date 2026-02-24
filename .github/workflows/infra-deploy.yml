@@ -78,16 +78,15 @@ jobs:
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
 
-      - name: Slack Notification
+      - name: Mattermost Notification
         if: ${{ always() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_TITLE: 'Fizzy CDK Deployment'
-          SLACK_MESSAGE: |
-            *Environment:* `${{ env.ENVIRONMENT }}`
-
-            *Image Version:* `${{ inputs.imageVersion }}`
-
-            *Commit Message:* ${{ github.event.head_commit.message }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        uses: mattermost/action-mattermost-notify@master
+        with:
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
+          TEXT: |
+            ##### Fizzy CDK Deployment — ${{ job.status }}
+            | | |
+            |:--|:--|
+            | **Environment** | `${{ env.ENVIRONMENT }}` |
+            | **Image Version** | `${{ inputs.imageVersion }}` |
+            | **Commit** | ${{ github.event.head_commit.message }} |
