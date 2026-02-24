@@ -82,7 +82,6 @@ jobs:
         if: ${{ always() }}
         id: vars
         run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-        working-directory: .
 
       - name: Mattermost Notification
         if: ${{ always() }}
