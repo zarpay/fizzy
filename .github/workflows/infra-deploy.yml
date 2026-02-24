@@ -78,15 +78,10 @@ jobs:
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
 
-      - name: Prepare notification vars
+      - name: Set short SHA
         if: ${{ always() }}
         id: vars
-        env:
-          RAW_MSG: ${{ github.event.head_commit.message }}
-        run: |
-          echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-          FIRST_LINE=$(echo "$RAW_MSG" | head -1)
-          echo "commit_msg=$FIRST_LINE" >> $GITHUB_OUTPUT
+        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
         working-directory: .
 
       - name: Mattermost Notification
@@ -100,6 +95,6 @@ jobs:
               "username": "${{ github.event.repository.name }}-deployer",
               "attachments": [{
                 "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
-                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ steps.vars.outputs.commit_msg }}"
+                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |"
               }]
             }
