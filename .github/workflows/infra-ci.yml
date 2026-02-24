@@ -49,45 +49,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version-file: infra/package.json
-      #     cache: yarn
-      #     cache-dependency-path: infra/yarn.lock
-
-      # - name: Install dependencies
-      #   run: yarn --frozen-lockfile --production=false
-
-      # - name: Build
-      #   run: yarn build
-
-      # - name: Synthesize CDK Stack
-      #   run: yarn cdk synth --context imageVersion=ci-synth-test
-      #   env:
-      #     CDK_DEFAULT_ACCOUNT: '000000000000'
-      #     ENVIRONMENT: production
-
-      - name: Set short SHA
-        if: ${{ always() }}
-        id: vars
-        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-        working-directory: .
-
-      - name: Mattermost Notification (test)
-        if: ${{ always() }}
-        uses: mattermost/action-mattermost-notify@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
-          PAYLOAD: |-
-            {
-              "channel": "taut-test-notifications",
-              "username": "${{ github.event.repository.name }}-deployer",
-              "attachments": [{
-                "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
-                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `production` |\n| **Image Version** | `ci-test` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ github.event.pull_request.title }}"
-              }]
-            }
+          node-version-file: infra/package.json
+          cache: yarn
+          cache-dependency-path: infra/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --production=false
+
+      - name: Build
+        run: yarn build
+
+      - name: Synthesize CDK Stack
+        run: yarn cdk synth --context imageVersion=ci-synth-test
+        env:
+          CDK_DEFAULT_ACCOUNT: '000000000000'
+          ENVIRONMENT: production
