@@ -76,10 +76,10 @@ jobs:
         uses: mattermost/action-mattermost-notify@master
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
-          MATTERMOST_CHANNEL: taut-test-notifications
-          MATTERMOST_USERNAME: fizzy-deployer
           PAYLOAD: |-
             {
+              "channel": "taut-test-notifications",
+              "username": "fizzy-deployer",
               "attachments": [{
                 "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
                 "text": "##### Fizzy CDK CI — ${{ job.status }}\n| | |\n|:--|:--|\n| **Job** | synth |\n| **PR** | #${{ github.event.pull_request.number }} |\n| **Actor** | ${{ github.actor }} |"
