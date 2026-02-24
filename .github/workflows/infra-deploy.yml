@@ -85,10 +85,10 @@ jobs:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
           MATTERMOST_CHANNEL: devops-alerts
           MATTERMOST_USERNAME: fizzy-deployer
-          TEXT: |
-            ##### Fizzy CDK Deployment — ${{ job.status }}
-            | | |
-            |:--|:--|
-            | **Environment** | `${{ env.ENVIRONMENT }}` |
-            | **Image Version** | `${{ inputs.imageVersion }}` |
-            | **Commit** | ${{ github.event.head_commit.message }} |
+          PAYLOAD: |-
+            {
+              "attachments": [{
+                "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
+                "text": "##### Fizzy CDK Deployment — ${{ job.status }}\n| | |\n|:--|:--|\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Commit** | ${{ github.event.head_commit.message }} |"
+              }]
+            }
