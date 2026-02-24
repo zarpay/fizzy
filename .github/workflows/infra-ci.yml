@@ -82,6 +82,6 @@ jobs:
               "username": "fizzy-deployer",
               "attachments": [{
                 "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
-                "text": "##### Fizzy CDK CI — ${{ job.status }}\n| | |\n|:--|:--|\n| **Job** | synth |\n| **PR** | #${{ github.event.pull_request.number }} |\n| **Actor** | ${{ github.actor }} |"
+                "text": "##### Fizzy CDK CI — ${{ job.status }}\n| | |\n|:--|:--|\n| **Job** | synth |\n| **PR** | [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) |\n| **Actions URL** | [CI Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Actor** | ${{ github.actor }} |"
               }]
             }
