@@ -85,15 +85,21 @@ jobs:
 
       - name: Mattermost Notification
         if: ${{ always() }}
-        uses: mattermost/action-mattermost-notify@master
+        uses: adriantaut/action-mattermost-notify@feature/add-color-input
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
-          PAYLOAD: |-
-            {
-              "channel": "devops-alerts",
-              "username": "${{ github.event.repository.name }}-deployer",
-              "attachments": [{
-                "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
-                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |"
-              }]
-            }
+          MATTERMOST_CHANNEL: devops-alerts
+          MATTERMOST_USERNAME: ${{ github.event.repository.name }}-deployer
+          COLOR: ${{ job.status }}
+          TEXT: |
+            ##### Fizzy CDK Deployment
+            | | |
+            |:--|:--|
+            | **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |
+            | **Environment** | `${{ env.ENVIRONMENT }}` |
+            | **Image Version** | `${{ inputs.imageVersion }}` |
+            | **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
+            | **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |
+            | **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |
+
+            **Commit Message:** ${{ github.event.head_commit.message }}
