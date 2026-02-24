@@ -81,10 +81,12 @@ jobs:
       - name: Prepare notification vars
         if: ${{ always() }}
         id: vars
+        env:
+          RAW_MSG: ${{ github.event.head_commit.message }}
         run: |
           echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-          COMMIT_MSG=$(echo "${{ github.event.head_commit.message }}" | head -1 | sed 's/"/\\"/g')
-          echo "commit_msg=$COMMIT_MSG" >> $GITHUB_OUTPUT
+          FIRST_LINE=$(echo "$RAW_MSG" | head -1)
+          echo "commit_msg=$FIRST_LINE" >> $GITHUB_OUTPUT
         working-directory: .
 
       - name: Mattermost Notification
