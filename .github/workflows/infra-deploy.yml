@@ -78,16 +78,22 @@ jobs:
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
 
-      - name: Slack Notification
+      - name: Set short SHA
         if: ${{ always() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_TITLE: 'Fizzy CDK Deployment'
-          SLACK_MESSAGE: |
-            *Environment:* `${{ env.ENVIRONMENT }}`
+        id: vars
+        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
-            *Image Version:* `${{ inputs.imageVersion }}`
-
-            *Commit Message:* ${{ github.event.head_commit.message }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Mattermost Notification
+        if: ${{ always() }}
+        uses: mattermost/action-mattermost-notify@master
+        with:
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
+          PAYLOAD: |-
+            {
+              "channel": "devops-alerts",
+              "username": "${{ github.event.repository.name }}-deployer",
+              "attachments": [{
+                "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
+                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ github.event.head_commit.message }}"
+              }]
+            }
