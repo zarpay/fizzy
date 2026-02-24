@@ -78,10 +78,14 @@ jobs:
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
 
-      - name: Set short SHA
+      - name: Prepare notification vars
         if: ${{ always() }}
         id: vars
-        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+        run: |
+          echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          COMMIT_MSG=$(echo "${{ github.event.head_commit.message }}" | head -1 | sed 's/"/\\"/g')
+          echo "commit_msg=$COMMIT_MSG" >> $GITHUB_OUTPUT
+        working-directory: .
 
       - name: Mattermost Notification
         if: ${{ always() }}
@@ -94,6 +98,6 @@ jobs:
               "username": "${{ github.event.repository.name }}-deployer",
               "attachments": [{
                 "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
-                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ github.event.head_commit.message }}"
+                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `${{ env.ENVIRONMENT }}` |\n| **Image Version** | `${{ inputs.imageVersion }}` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ steps.vars.outputs.commit_msg }}"
               }]
             }
