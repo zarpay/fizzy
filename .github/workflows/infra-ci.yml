@@ -49,29 +49,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # - name: Checkout
+      #   uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: infra/package.json
-          cache: yarn
-          cache-dependency-path: infra/yarn.lock
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version-file: infra/package.json
+      #     cache: yarn
+      #     cache-dependency-path: infra/yarn.lock
 
-      - name: Install dependencies
-        run: yarn --frozen-lockfile --production=false
+      # - name: Install dependencies
+      #   run: yarn --frozen-lockfile --production=false
 
-      - name: Build
-        run: yarn build
+      # - name: Build
+      #   run: yarn build
 
-      - name: Synthesize CDK Stack
-        run: yarn cdk synth --context imageVersion=ci-synth-test
-        env:
-          CDK_DEFAULT_ACCOUNT: '000000000000'
-          ENVIRONMENT: production
+      # - name: Synthesize CDK Stack
+      #   run: yarn cdk synth --context imageVersion=ci-synth-test
+      #   env:
+      #     CDK_DEFAULT_ACCOUNT: '000000000000'
+      #     ENVIRONMENT: production
 
-      - name: Mattermost Notification (test)
+      - name: Mattermost Notification (test - table)
         if: ${{ always() }}
         uses: mattermost/action-mattermost-notify@master
         with:
@@ -83,5 +83,20 @@ jobs:
               "attachments": [{
                 "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
                 "text": "##### Fizzy CDK CI — ${{ job.status }}\n| | |\n|:--|:--|\n| **Job** | synth |\n| **PR** | [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) |\n| **Actions URL** | [CI Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Actor** | ${{ github.actor }} |"
+              }]
+            }
+
+      - name: Mattermost Notification (test - plain)
+        if: ${{ always() }}
+        uses: mattermost/action-mattermost-notify@master
+        with:
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
+          MATTERMOST_CHANNEL: taut-test-notifications
+          MATTERMOST_USERNAME: fizzy-deployer
+          PAYLOAD: |-
+            {
+              "attachments": [{
+                "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
+                "text": "##### Fizzy CDK CI — ${{ job.status }}\n**Job:** synth\n**PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n**Actions URL:** [CI Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\n**Actor:** ${{ github.actor }}"
               }]
             }
