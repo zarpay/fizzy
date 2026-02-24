@@ -71,6 +71,11 @@ jobs:
       #     CDK_DEFAULT_ACCOUNT: '000000000000'
       #     ENVIRONMENT: production
 
+      - name: Set short SHA
+        if: ${{ always() }}
+        id: vars
+        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
       - name: Mattermost Notification (test)
         if: ${{ always() }}
         uses: mattermost/action-mattermost-notify@master
@@ -82,6 +87,6 @@ jobs:
               "username": "${{ github.event.repository.name }}-deployer",
               "attachments": [{
                 "color": "${{ job.status == 'success' && '#2EA043' || '#D40E0D' }}",
-                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `production` |\n| **Image Version** | `ci-test` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ github.event.pull_request.title }}"
+                "text": "##### Fizzy CDK Deployment\n| | |\n|:--|:--|\n| **Product** | [fizzy](${{ github.server_url }}/${{ github.repository }}) |\n| **Environment** | `production` |\n| **Image Version** | `ci-test` |\n| **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |\n| **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |\n| **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |\n\n**Commit Message:** ${{ github.event.pull_request.title }}"
               }]
             }
