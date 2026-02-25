@@ -78,13 +78,9 @@ jobs:
           set -euo pipefail
           yarn cdk deploy --require-approval never --context imageVersion=${{ inputs.imageVersion }}
 
-      - name: Set short SHA
-        if: ${{ always() }}
-        id: vars
-        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-
       - name: Mattermost Notification
         if: ${{ always() }}
+        # TODO: Replace once https://github.com/mattermost/action-mattermost-notify/pull/20 is merged
         uses: adriantaut/action-mattermost-notify@feature/add-color-input
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
@@ -99,7 +95,7 @@ jobs:
             | **Environment** | `${{ env.ENVIRONMENT }}` |
             | **Image Version** | `${{ inputs.imageVersion }}` |
             | **Actions URL** | [Deploy](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
-            | **Commit** | [`${{ steps.vars.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |
+            | **Commit** | [`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |
             | **Actor** | [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }}) |
 
             **Commit Message:** ${{ github.event.head_commit.message }}
