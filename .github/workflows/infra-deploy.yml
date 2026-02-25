@@ -84,7 +84,7 @@ jobs:
         uses: adriantaut/action-mattermost-notify@feature/add-color-input
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
-          MATTERMOST_CHANNEL: devops-alerts
+          MATTERMOST_CHANNEL: platform-alerts
           MATTERMOST_USERNAME: ${{ github.event.repository.name }}-deployer
           COLOR: ${{ job.status }}
           TEXT: |
