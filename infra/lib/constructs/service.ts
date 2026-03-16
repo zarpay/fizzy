@@ -63,6 +63,8 @@ export class Service extends Construct {
         DATABASE_ADAPTER: 'mysql',
         MYSQL_HOST: props.database.cluster.clusterEndpoint.hostname,
         MYSQL_PORT: props.database.cluster.clusterEndpoint.port.toString(),
+        // Trusted CIDRs for OpenGraph preview (Mattermost link unfurling)
+        OPENGRAPH_TRUSTED_CIDRS: props.vpc.vpcCidrBlock,
         // S3 storage for ActiveStorage
         ...props.storage.environmentVariables,
       },

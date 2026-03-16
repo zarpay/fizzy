@@ -1,8 +1,13 @@
 class CardsController < ApplicationController
   include FilterScoped
+  include OpengraphPreview
 
+  allow_unauthenticated_access only: :show
+  skip_before_action :require_account, only: :show
+
+  before_action :serve_opengraph_or_authenticate, only: :show
   before_action :set_board, only: %i[ create ]
-  before_action :set_card, only: %i[ show edit update destroy ]
+  before_action :set_card, only: %i[ edit update destroy ]
   before_action :redirect_if_drafted, only: :show
   before_action :ensure_permission_to_administer_card, only: %i[ destroy ]
 
@@ -49,6 +54,20 @@ class CardsController < ApplicationController
   end
 
   private
+    def serve_opengraph_or_authenticate
+      if trusted_ip? && !authenticated?
+        @card = Card.find_by!(number: params[:id])
+        render "cards/opengraph", layout: false and return
+      end
+
+      require_account
+      return if performed?
+      require_authentication
+      return if performed?
+
+      @card = Current.user.accessible_cards.find_by!(number: params[:id])
+    end
+
     def set_board
       @board = Current.user.boards.find params[:board_id]
     end
